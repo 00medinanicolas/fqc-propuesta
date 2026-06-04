@@ -332,29 +332,29 @@
   }
   @keyframes annotIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.85)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 
-  /* Narración cíclica (frase aparece, desaparece, siguiente) */
+  /* Subtítulo cinemático sobre el video — guía la lectura */
   .modal-narr{
-    position:relative;background:rgba(82,41,132,.10);
-    border-left:3px solid var(--brand-bright);border-radius:0 6px 6px 0;
-    padding:22px 26px 18px;margin-bottom:16px;overflow:hidden;
-    opacity:0;animation:fadeUp .35s ease .2s forwards;
+    position:absolute;left:0;right:0;bottom:0;z-index:5;
+    padding:80px 32px 22px;pointer-events:none;
+    background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.55) 45%,rgba(0,0,0,.92) 100%);
+    opacity:0;animation:fadeUp .35s ease .25s forwards;
   }
-  .modal.test .modal-narr{background:rgba(244,201,93,.08);border-left-color:var(--accent)}
-  .modal.core .modal-narr{background:rgba(95,216,168,.08);border-left-color:var(--ok)}
-  .narr-stack{position:relative;min-height:56px}
+  .narr-stack{position:relative;min-height:62px}
   .narr-line{
-    position:absolute;inset:0;display:flex;align-items:center;
-    font-size:1.04rem;color:var(--text-0);font-weight:400;line-height:1.45;
-    opacity:0;transform:translateY(8px);
-    transition:opacity .45s ease,transform .45s ease;
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:1.22rem;color:#fff;font-weight:500;line-height:1.4;text-align:center;
+    text-shadow:0 2px 10px rgba(0,0,0,.7),0 0 24px rgba(0,0,0,.45);
+    letter-spacing:-.005em;
+    opacity:0;transform:translateY(10px);
+    transition:opacity .5s ease,transform .5s ease;
   }
   .narr-line.active{opacity:1;transform:translateY(0)}
-  .narr-dots{display:flex;gap:6px;margin-top:14px}
+  .narr-dots{display:flex;gap:6px;margin-top:14px;justify-content:center}
   .narr-dots span{
-    width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.18);
+    width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.28);
     transition:background .25s,width .25s;
   }
-  .narr-dots span.active{background:var(--brand-bright);width:18px;border-radius:3px}
+  .narr-dots span.active{background:var(--brand-bright);width:20px;border-radius:3px}
   .modal.test .narr-dots span.active{background:var(--accent)}
   .modal.core .narr-dots span.active{background:var(--ok)}
 
@@ -604,10 +604,12 @@
     .modal-title{font-size:1.45rem}
     .modal-sub{font-size:.9rem}
     .modal-body{padding:0 22px 22px}
-    .modal-figure{margin:12px 0 16px}
-    .modal-figure img,.modal-figure video{max-height:240px}
-    .modal-narr{padding:18px 20px 14px}
-    .narr-line{font-size:.96rem}
+    .modal-figure{margin:12px 0 16px;min-height:200px}
+    .modal-figure img,.modal-figure video{max-height:280px}
+    .modal-narr{padding:50px 18px 16px}
+    .narr-stack{min-height:48px}
+    .narr-line{font-size:.96rem;line-height:1.35}
+    .narr-dots{margin-top:10px}
     .modal-meta{padding:12px 14px}
     .modal-meta .mm-row{flex-direction:column;align-items:flex-start;gap:2px}
     .modal-meta .mm-value{text-align:left;font-size:.84rem}
@@ -1043,11 +1045,12 @@
       <p class="modal-sub" id="m-sub"></p>
     </header>
     <div class="modal-body">
-      <figure class="modal-figure" id="m-figure"></figure>
-      <div class="modal-narr" id="m-narr">
-        <div class="narr-stack" id="m-narr-stack"></div>
-        <div class="narr-dots" id="m-narr-dots"></div>
-      </div>
+      <figure class="modal-figure" id="m-figure">
+        <div class="modal-narr" id="m-narr">
+          <div class="narr-stack" id="m-narr-stack"></div>
+          <div class="narr-dots" id="m-narr-dots"></div>
+        </div>
+      </figure>
       <div class="modal-meta" id="m-meta"></div>
     </div>
   </div>
@@ -1228,23 +1231,24 @@
       annotations:[{x:30, y:42, dy:28, text:'12 tags por POI'}],
       narration:[
         'Es la capa base de nuestro mapa.',
-        'Trae los locales del país, mantenidos por la comunidad.',
+        'Es el Wikipedia de los mapas: lo arma y mantiene la comunidad.',
         'Gratuito, masivo, siempre disponible.'
       ],
-      meta:[['Tipo','POIs + tags'],['Cobertura','Nacional'],['Frecuencia','Tiempo real'],['Costo','Gratis']]
+      meta:[['Tipo','Puntos de interés + tags'],['Cobertura','Nacional'],['Actualizaciones','Tiempo real'],['Acceso','Gratis']]
     },
     'overture':{
       color:'prod', eyebrow:'Producción · Dataset global', title:'Overture Maps',
       sub:'Consorcio de Meta, Microsoft, Amazon y TomTom.',
       video:'assets/overture.mp4',
+      playbackRate:1.25,
       image:'assets/07_colab_overture_composicion_mendoza.png',
       annotations:[{x:55, y:32, dy:26, text:'Meta + Microsoft'}],
       narration:[
         'Complementa lo que OSM no cubre.',
-        'Releases trimestrales de un consorcio global.',
-        'Cierra los huecos en zonas menos mapeadas.'
+        'Releases mensuales de un consorcio global.',
+        'Detecta micro-negocios y servicios particulares.'
       ],
-      meta:[['Tipo','POIs consolidados'],['Cobertura','Global'],['Frecuencia','Trimestral'],['Costo','Gratis']]
+      meta:[['Tipo','Puntos de interés consolidados'],['Cobertura','Global'],['Actualizaciones','Mensual'],['Acceso','Gratis']]
     },
     'gplaces':{
       color:'prod', eyebrow:'Producción · Vigencia', title:'Google Places API',
@@ -1318,15 +1322,14 @@
     },
     'n8n':{
       color:'core', eyebrow:'Infraestructura · Orquestador', title:'n8n',
-      sub:'El reloj automático que actualiza las bases.',
+      sub:'El orquestador de flujos de trabajo.',
       video:'assets/n8n.mp4',
       svg:SVG_N8N,
       narration:[
-        'El reloj automático del sistema.',
-        'Decide cuándo se actualiza cada fuente.',
-        'Editable visualmente, sin tocar código.'
-      ],
-      meta:[['Rol','Orquestador'],['Triggers','Cron · webhook · manual'],['Auditoría','Logs por ejecución'],['Costo','Gratis (self-hosted)']]
+        'Se instala en el servidor.',
+        'Permite automatizar procesos.',
+        'Se monta al sistema o CRM para usarse desde la interfaz.'
+      ]
     }
   };
 
@@ -1338,6 +1341,7 @@
   const mTitle = document.getElementById('m-title');
   const mSub = document.getElementById('m-sub');
   const mFigure = document.getElementById('m-figure');
+  const mNarr = document.getElementById('m-narr');
   const mNarrStack = document.getElementById('m-narr-stack');
   const mNarrDots = document.getElementById('m-narr-dots');
   const mMeta = document.getElementById('m-meta');
@@ -1367,19 +1371,20 @@
   }
 
   function renderFigure(data){
-    mFigure.innerHTML = '';
+    // Limpiar todo menos el overlay de subtítulo
+    Array.from(mFigure.children).forEach(c => { if(c !== mNarr) c.remove(); });
     mFigure.classList.remove('dark');
     const renderImage = ()=>{
       if(!data.image && !data.svg) return;
       if(data.svg){
         mFigure.classList.add('dark');
-        mFigure.innerHTML = data.svg;
+        mFigure.insertAdjacentHTML('afterbegin', data.svg);
         return;
       }
       const img = document.createElement('img');
       img.src = data.image;
       img.alt = data.title;
-      mFigure.appendChild(img);
+      mFigure.insertBefore(img, mNarr);
       (data.annotations || []).forEach((a,i)=>{
         const ann = document.createElement('div');
         ann.className = 'modal-annot';
@@ -1388,7 +1393,7 @@
         ann.style.top = a.y + '%';
         ann.style.setProperty('--ann-len', (a.dy || 24) + 'px');
         ann.style.animationDelay = (0.45 + i*0.15) + 's';
-        mFigure.appendChild(ann);
+        mFigure.insertBefore(ann, mNarr);
       });
     };
     if(data.video){
@@ -1397,12 +1402,18 @@
       v.src = data.video;
       v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true;
       v.preload = 'metadata';
+      if(data.playbackRate){
+        v.defaultPlaybackRate = data.playbackRate;
+        v.addEventListener('loadedmetadata', ()=>{
+          try{ v.playbackRate = data.playbackRate; }catch(e){}
+        });
+      }
       v.onerror = ()=>{
         mFigure.classList.remove('dark');
         v.remove();
         renderImage();
       };
-      mFigure.appendChild(v);
+      mFigure.insertBefore(v, mNarr);
     } else {
       renderImage();
     }
@@ -1432,7 +1443,9 @@
     });
 
     mMeta.innerHTML = '';
-    (data.meta || []).forEach(([label,value])=>{
+    const metaRows = data.meta || [];
+    mMeta.style.display = metaRows.length ? '' : 'none';
+    metaRows.forEach(([label,value])=>{
       const row = document.createElement('div');
       row.className = 'mm-row';
       const lab = document.createElement('span'); lab.className = 'mm-label'; lab.textContent = label;
