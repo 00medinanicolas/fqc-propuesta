@@ -368,65 +368,68 @@
   .modal-meta .mm-value{font-size:.82rem;color:var(--text-1);text-align:right;font-family:'JetBrains Mono',monospace;font-weight:400}
 
   /* ============== SLIDE 5: COSTO DE TRABAJO ============== */
-  #s5{background:linear-gradient(180deg,#0c0a1a 0%,var(--bg-0) 100%)}
+  #s5{background:linear-gradient(180deg,#0c0a1a 0%,var(--bg-0) 100%);padding:4vh 6vw}
   .s5-inner{position:relative;z-index:2;width:100%;max-width:1240px}
-  .s5-header{text-align:center;margin-bottom:3.5vh}
+  .s5-header{text-align:center;margin-bottom:2.4vh}
+  #s5 .slide-title{font-size:clamp(1.5rem,2.6vw,2.1rem);margin-bottom:.6rem}
+  #s5 .eyebrow{margin-bottom:.7rem}
   .cost-card{
     border:1px solid var(--line-2);border-radius:14px;
     background:linear-gradient(160deg,rgba(34,28,61,.6) 0%,rgba(18,16,29,.92) 100%);
     overflow:hidden;
   }
   .cost-caption{
-    padding:18px 28px;font-size:.74rem;letter-spacing:.32em;text-transform:uppercase;
+    padding:13px 24px;font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;
     color:var(--brand-bright);border-bottom:1px solid var(--line-2);font-weight:600;
     text-align:center;background:rgba(10,10,18,.4);
   }
-  .cost-table{width:100%;border-collapse:collapse;font-size:.92rem;table-layout:fixed}
+  .cost-table{width:100%;border-collapse:collapse;font-size:.9rem;table-layout:fixed}
   .cost-table col.c-item{width:22%}
   .cost-table col.c-desc{width:39%}
   .cost-table col.c-plazo{width:11%}
   .cost-table col.c-horas{width:10%}
   .cost-table col.c-usd{width:18%}
   .cost-table thead th{
-    font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;color:var(--text-2);
-    font-weight:600;text-align:left;padding:16px 24px;background:rgba(10,10,18,.55);
+    font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--text-2);
+    font-weight:600;text-align:left;padding:12px 22px;background:rgba(10,10,18,.55);
     border-bottom:1px solid var(--line-2);
   }
   .cost-table thead th.right{text-align:right}
   .cost-table tbody td{
-    padding:15px 24px;border-bottom:1px solid var(--line);vertical-align:middle;
+    padding:11px 22px;border-bottom:1px solid var(--line);vertical-align:top;
   }
   .cost-table tbody tr:last-of-type td{border-bottom:0}
   .ct-item{
     font-weight:700;color:#fff;border-right:1px solid var(--line-2);
     border-left:3px solid rgba(139,92,246,.45);
     background:linear-gradient(180deg,rgba(82,41,132,.18) 0%,rgba(82,41,132,.08) 100%);
-    vertical-align:middle;line-height:1.35;padding-left:22px;
+    vertical-align:top;line-height:1.3;padding-left:20px;padding-top:13px;
   }
-  .ct-item strong{display:block;font-size:.96rem;letter-spacing:.005em;color:#fff}
+  .ct-item strong{display:block;font-size:.9rem;letter-spacing:.005em;color:#fff}
   .ct-item .ct-obj{
-    display:block;font-weight:300;font-size:.76rem;color:var(--text-2);
-    margin-top:6px;line-height:1.45;font-style:italic;
+    display:block;font-weight:300;font-size:.72rem;color:var(--text-2);
+    margin-top:5px;line-height:1.4;font-style:italic;
   }
-  .ct-desc{color:var(--text-1);font-weight:300;line-height:1.55}
-  .ct-plazo{color:var(--text-2);font-family:'JetBrains Mono',monospace;font-size:.8rem;letter-spacing:.02em}
-  .ct-horas{color:var(--text-1);font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:500;text-align:right;letter-spacing:.02em}
-  .ct-usd{color:#fff;font-family:'JetBrains Mono',monospace;font-size:.94rem;font-weight:600;text-align:right;letter-spacing:.02em}
+  .ct-desc{color:var(--text-1);font-weight:300;line-height:1.5}
+  .ct-plazo{color:var(--text-2);font-family:'JetBrains Mono',monospace;font-size:.78rem;letter-spacing:.02em}
+  .ct-horas{color:var(--text-1);font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:500;text-align:right;letter-spacing:.02em}
+  .ct-usd{color:#fff;font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600;text-align:right;letter-spacing:.02em}
   .cost-table tr.ct-total td{
     background:linear-gradient(90deg,rgba(82,41,132,.42) 0%,rgba(139,92,246,.18) 100%);
-    border-top:1px solid var(--brand-bright);padding:20px 24px;
+    border-top:1px solid var(--brand-bright);padding:14px 22px;vertical-align:middle;
   }
   .cost-table tr.ct-total .ct-item{
     background:linear-gradient(90deg,rgba(82,41,132,.55) 0%,rgba(82,41,132,.32) 100%);
     border-left:3px solid var(--brand-bright);
-    font-size:.78rem;letter-spacing:.28em;text-transform:uppercase;color:#fff;
+    font-size:.74rem;letter-spacing:.26em;text-transform:uppercase;color:#fff;
+    padding-top:14px;
   }
-  .cost-table tr.ct-total .ct-item strong{letter-spacing:.28em;font-size:.78rem}
-  .cost-table tr.ct-total .ct-desc{font-size:.82rem;color:var(--text-1);font-style:italic}
-  .cost-table tr.ct-total .ct-usd{color:var(--brand-bright);font-size:1.18rem}
+  .cost-table tr.ct-total .ct-item strong{letter-spacing:.26em;font-size:.74rem}
+  .cost-table tr.ct-total .ct-desc{font-size:.8rem;color:var(--text-1);font-style:italic}
+  .cost-table tr.ct-total .ct-usd{color:var(--brand-bright);font-size:1.1rem}
   .cost-notes{
-    margin-top:14px;font-size:.74rem;color:var(--text-2);text-align:center;
-    display:flex;justify-content:center;gap:32px;
+    margin-top:10px;font-size:.7rem;color:var(--text-2);text-align:center;
+    display:flex;justify-content:center;gap:28px;
   }
 
   /* ============== SLIDE 6: HERRAMIENTAS EXTERNAS ============== */
