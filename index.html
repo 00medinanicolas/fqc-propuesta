@@ -382,44 +382,48 @@
     text-align:center;background:rgba(10,10,18,.4);
   }
   .cost-table{width:100%;border-collapse:collapse;font-size:.92rem;table-layout:fixed}
-  .cost-table col.c-item{width:18%}
-  .cost-table col.c-desc{width:42%}
+  .cost-table col.c-item{width:22%}
+  .cost-table col.c-desc{width:39%}
   .cost-table col.c-plazo{width:11%}
   .cost-table col.c-horas{width:10%}
-  .cost-table col.c-usd{width:19%}
+  .cost-table col.c-usd{width:18%}
   .cost-table thead th{
     font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;color:var(--text-2);
-    font-weight:600;text-align:left;padding:14px 22px;background:rgba(10,10,18,.55);
+    font-weight:600;text-align:left;padding:16px 24px;background:rgba(10,10,18,.55);
     border-bottom:1px solid var(--line-2);
   }
   .cost-table thead th.right{text-align:right}
   .cost-table tbody td{
-    padding:14px 22px;border-bottom:1px solid var(--line);vertical-align:middle;
+    padding:15px 24px;border-bottom:1px solid var(--line);vertical-align:middle;
   }
   .cost-table tbody tr:last-of-type td{border-bottom:0}
   .ct-item{
     font-weight:700;color:#fff;border-right:1px solid var(--line-2);
-    background:rgba(82,41,132,.10);vertical-align:middle;line-height:1.3;
+    border-left:3px solid rgba(139,92,246,.45);
+    background:linear-gradient(180deg,rgba(82,41,132,.18) 0%,rgba(82,41,132,.08) 100%);
+    vertical-align:middle;line-height:1.35;padding-left:22px;
   }
-  .ct-item strong{display:block;font-size:.96rem;letter-spacing:.01em}
+  .ct-item strong{display:block;font-size:.96rem;letter-spacing:.005em;color:#fff}
   .ct-item .ct-obj{
     display:block;font-weight:300;font-size:.76rem;color:var(--text-2);
-    margin-top:8px;line-height:1.45;font-style:italic;
+    margin-top:6px;line-height:1.45;font-style:italic;
   }
-  .ct-desc{color:var(--text-1);font-weight:300;line-height:1.5}
-  .ct-plazo{color:var(--text-2);font-family:'JetBrains Mono',monospace;font-size:.82rem}
-  .ct-horas{color:var(--text-1);font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:500;text-align:right}
+  .ct-desc{color:var(--text-1);font-weight:300;line-height:1.55}
+  .ct-plazo{color:var(--text-2);font-family:'JetBrains Mono',monospace;font-size:.8rem;letter-spacing:.02em}
+  .ct-horas{color:var(--text-1);font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:500;text-align:right;letter-spacing:.02em}
   .ct-usd{color:#fff;font-family:'JetBrains Mono',monospace;font-size:.94rem;font-weight:600;text-align:right;letter-spacing:.02em}
   .cost-table tr.ct-total td{
-    background:linear-gradient(90deg,rgba(82,41,132,.4) 0%,rgba(139,92,246,.16) 100%);
-    border-top:1px solid var(--brand-bright);padding:18px 22px;
+    background:linear-gradient(90deg,rgba(82,41,132,.42) 0%,rgba(139,92,246,.18) 100%);
+    border-top:1px solid var(--brand-bright);padding:20px 24px;
   }
   .cost-table tr.ct-total .ct-item{
-    background:linear-gradient(90deg,rgba(82,41,132,.4) 0%,rgba(82,41,132,.25) 100%);
+    background:linear-gradient(90deg,rgba(82,41,132,.55) 0%,rgba(82,41,132,.32) 100%);
+    border-left:3px solid var(--brand-bright);
     font-size:.78rem;letter-spacing:.28em;text-transform:uppercase;color:#fff;
   }
+  .cost-table tr.ct-total .ct-item strong{letter-spacing:.28em;font-size:.78rem}
   .cost-table tr.ct-total .ct-desc{font-size:.82rem;color:var(--text-1);font-style:italic}
-  .cost-table tr.ct-total .ct-usd{color:var(--brand-bright);font-size:1.14rem}
+  .cost-table tr.ct-total .ct-usd{color:var(--brand-bright);font-size:1.18rem}
   .cost-notes{
     margin-top:14px;font-size:.74rem;color:var(--text-2);text-align:center;
     display:flex;justify-content:center;gap:32px;
@@ -453,6 +457,178 @@
     margin-top:5vh;text-align:center;font-size:.84rem;color:var(--text-2);max-width:60ch;margin-left:auto;margin-right:auto;line-height:1.6;
   }
   .s6-footer strong{color:var(--brand-bright);font-weight:600}
+
+  /* ============================================================
+     RESPONSIVE — tablet y phone (estilo Mam-fera)
+     Breakpoints: 1024 (tablet), 768 (phone), 480 (phone chico)
+     ============================================================ */
+
+  /* dvh fallback para evitar saltos por la barra del browser */
+  @supports (height:100dvh){
+    section.slide{height:100dvh}
+  }
+
+  /* ---------- TABLET ≤1024px ---------- */
+  @media (max-width:1024px){
+    section.slide{padding:6vh 5vw}
+    .slide-title{font-size:clamp(1.7rem,3.4vw,2.5rem)}
+    .s4-flow{grid-template-columns:1fr 1fr;gap:14px}
+    .s4-flow .bb-core{grid-column:1 / -1}
+    .s6-grid{grid-template-columns:repeat(2,1fr)}
+    .modal{max-width:680px}
+  }
+
+  /* ---------- PHONE ≤768px ---------- */
+  @media (max-width:768px){
+    /* Scroll-snap off — flujo continuo más natural en celu */
+    .scroll-container{scroll-snap-type:none}
+    section.slide{
+      height:auto;min-height:100vh;min-height:100dvh;
+      padding:9vh 6vw 7vh;justify-content:center;
+      scroll-snap-stop:normal;
+    }
+    .corner-brand{left:18px;bottom:16px;transform:scale(.78);transform-origin:bottom left;opacity:.5}
+    .slide-counter{top:16px;right:18px;font-size:10px}
+    .scroll-cue{bottom:22px;font-size:9px;letter-spacing:.26em}
+    .scroll-cue::after{height:24px}
+
+    /* Landing */
+    .landing-inner{gap:24px}
+    .logo-wrap{flex-direction:column;gap:12px}
+    .logo-mark{width:38px}
+    .logo-img{height:42px}
+    .landing-title{font-size:clamp(2.2rem,9vw,3rem)}
+    .landing-sub{font-size:.96rem;padding:0 4vw}
+    .landing-meta{font-size:.72rem;letter-spacing:.28em}
+
+    /* Eyebrow + slide-title comunes */
+    .eyebrow{font-size:.66rem;letter-spacing:.28em;margin-bottom:.7rem}
+    .eyebrow::before{width:18px}
+    .slide-title{font-size:clamp(1.6rem,6.5vw,2.2rem);margin-bottom:.8rem}
+    .slide-sub{font-size:.92rem}
+
+    /* Slide 2 — Metodología: stack vertical con flecha hacia abajo */
+    .s2-diagram{flex-direction:column;gap:10px;margin-top:5vh}
+    .s2-node{min-width:0;width:100%;max-width:320px;padding:18px 24px;text-align:center}
+    .s2-node .phase-name{font-size:1.25rem}
+    .s2-arrow .arr-svg{display:none}
+    .s2-arrow::after{
+      content:'↓';color:var(--brand-bright);font-size:1.9rem;line-height:1;
+      filter:drop-shadow(0 0 8px rgba(139,92,246,.5));
+    }
+
+    /* Slide 3 — Comparativa: 1 columna */
+    .s3-grid{grid-template-columns:1fr;gap:16px}
+    .s3-col{min-height:auto;padding:24px 22px}
+    .s3-col-title{font-size:1.5rem;margin-bottom:22px}
+    .s3-list{gap:18px}
+    .s3-item-desc{font-size:.94rem}
+
+    /* Slide 4 — Flujo de datos: 1 columna */
+    .s4-flow{grid-template-columns:1fr;gap:14px}
+    .s4-flow .bb-core{grid-column:auto}
+    .blackbox{padding:18px 16px}
+    .src-row{padding:11px 10px}
+    .src-name{font-size:.9rem}
+    .src-sub{font-size:.72rem}
+    .src-pill{font-size:.62rem;padding:3px 7px}
+    .s4-hint{margin-top:18px;font-size:.66rem;letter-spacing:.22em}
+    .s4-foot{font-size:.7rem;padding:0 4vw}
+
+    /* Slide 5 — Tabla a cards */
+    .s5-inner{padding:0}
+    .cost-card{border-radius:10px}
+    .cost-caption{padding:14px 16px;font-size:.66rem;letter-spacing:.26em}
+    .cost-table{display:block;font-size:.9rem}
+    .cost-table colgroup,.cost-table thead{display:none}
+    .cost-table tbody{display:block;padding:10px 10px 12px}
+    .cost-table tr{
+      display:block;background:rgba(34,28,61,.45);
+      border:1px solid var(--line);border-radius:8px;
+      padding:14px 16px;margin-bottom:10px;
+    }
+    .cost-table tr:last-child{margin-bottom:0}
+    .cost-table tbody td{
+      display:block;padding:6px 0;border-bottom:none;
+    }
+    /* Etiquetas inline para cada celda */
+    .cost-table .ct-desc::before,
+    .cost-table .ct-plazo::before,
+    .cost-table .ct-horas::before,
+    .cost-table .ct-usd::before{
+      content:attr(data-label);display:block;
+      font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;
+      color:var(--text-2);font-weight:600;margin-bottom:3px;
+      font-family:'Inter',sans-serif;
+    }
+    .cost-table .ct-desc::before{content:'Descripción'}
+    .cost-table .ct-plazo::before{content:'Plazo'}
+    .cost-table .ct-horas::before{content:'Horas'}
+    .cost-table .ct-usd::before{content:'Costo'}
+    .cost-table .ct-horas,.cost-table .ct-usd{text-align:left}
+    .ct-item{
+      background:transparent;border-right:none;border-left:none;padding:0 0 10px;
+      margin-bottom:8px;border-bottom:1px solid var(--line-2);
+    }
+    .ct-item strong{font-size:1rem}
+    .ct-item .ct-obj{font-size:.78rem;margin-top:4px}
+    /* Lead row (con item) vs child rows — visual hint */
+    .cost-table tr:has(.ct-item){border-left:3px solid var(--brand-bright)}
+    .cost-table tr:not(:has(.ct-item)){
+      margin-left:14px;background:rgba(18,16,29,.5);
+      border-left:1px solid var(--line-2);
+    }
+    .cost-table tr.ct-total{
+      margin-left:0;
+      background:linear-gradient(160deg,rgba(82,41,132,.5) 0%,rgba(82,41,132,.2) 100%);
+      border-left:3px solid var(--brand-bright);
+    }
+    .cost-table tr.ct-total .ct-item{
+      background:transparent;border-bottom-color:rgba(255,255,255,.2);
+      letter-spacing:.24em;
+    }
+    .cost-table tr.ct-total .ct-usd{font-size:1.1rem}
+    .cost-notes{flex-direction:column;gap:6px;margin-top:18px;font-size:.7rem;padding:0 4vw}
+
+    /* Slide 6 — Herramientas: 1 columna */
+    .s6-grid{grid-template-columns:1fr;gap:12px}
+    .tool-card{min-height:auto;padding:22px 18px}
+    .tool-card .tc-title{font-size:1.08rem}
+    .tool-card .tc-role{font-size:.86rem}
+    .s6-footer{margin-top:4vh;font-size:.78rem;padding:0 4vw}
+
+    /* Modal — casi full-screen */
+    .modal-backdrop{padding:3vh 3vw}
+    .modal{max-width:100%;border-radius:10px}
+    .modal-header{padding:24px 22px 14px}
+    .modal-title{font-size:1.45rem}
+    .modal-sub{font-size:.9rem}
+    .modal-body{padding:0 22px 22px}
+    .modal-figure{margin:12px 0 16px}
+    .modal-figure img,.modal-figure video{max-height:240px}
+    .modal-narr{padding:18px 20px 14px}
+    .narr-line{font-size:.96rem}
+    .modal-meta{padding:12px 14px}
+    .modal-meta .mm-row{flex-direction:column;align-items:flex-start;gap:2px}
+    .modal-meta .mm-value{text-align:left;font-size:.84rem}
+    .modal-close{top:10px;right:10px;width:32px;height:32px;font-size:16px}
+    .modal-annot{font-size:.66rem;padding:4px 7px;max-width:60%}
+  }
+
+  /* ---------- PHONE chico ≤480px ---------- */
+  @media (max-width:480px){
+    section.slide{padding:8vh 5vw 6vh}
+    .landing-title{font-size:clamp(1.9rem,10vw,2.6rem)}
+    .landing-sub{font-size:.9rem}
+    .slide-title{font-size:1.55rem}
+    .s2-node{padding:16px 20px}
+    .s2-node .phase-name{font-size:1.15rem}
+    .s3-col{padding:22px 18px}
+    .s3-col-title{font-size:1.35rem}
+    .modal-title{font-size:1.3rem}
+    .narr-line{font-size:.92rem}
+    .corner-brand .corner-text{display:none}
+  }
 
 </style>
 </head>
