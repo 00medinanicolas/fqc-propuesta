@@ -310,15 +310,16 @@
   }
   .modal-figure.dark{background:#06060e}
   .modal-figure img{display:block;width:100%;height:auto;max-height:340px;object-fit:contain;background:#fff}
+  .modal-figure video{display:block;width:100%;height:auto;max-height:340px;object-fit:cover;background:#000}
   .modal-figure svg.svg-illu{display:block;width:100%;height:auto}
   @keyframes figFade{to{opacity:1}}
 
-  /* Annotations — positioned via percentages */
+  /* Annotations — positioned via percentages, clamped to figure */
   .modal-annot{
     position:absolute;font-size:.72rem;font-weight:600;letter-spacing:.04em;
     color:#fff;background:var(--brand-bright);
-    padding:5px 9px;border-radius:3px;white-space:nowrap;pointer-events:none;
-    transform:translate(-50%,-50%);
+    padding:5px 9px;border-radius:3px;pointer-events:none;
+    transform:translate(-50%,-50%);max-width:220px;text-align:center;line-height:1.3;
     opacity:0;animation:annotIn .4s ease forwards;
     box-shadow:0 4px 14px rgba(0,0,0,.4);
   }
@@ -329,25 +330,38 @@
     left:50%;top:100%;height:var(--ann-len,28px);transform-origin:top center;
     transform:translateX(-50%) rotate(var(--ann-rot,0deg));
   }
-  .modal-annot.up::before{top:auto;bottom:100%;transform-origin:bottom center}
   @keyframes annotIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.85)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 
-  .modal-content-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:flex-start}
-  .modal-bullets{display:flex;flex-direction:column;gap:11px;list-style:none}
-  .modal-bullets li{
-    padding-left:22px;position:relative;font-size:.93rem;color:var(--text-1);
-    line-height:1.55;font-weight:300;
-    opacity:0;transform:translateY(6px);animation:fadeUp .35s ease forwards;
+  /* Narración cíclica (frase aparece, desaparece, siguiente) */
+  .modal-narr{
+    position:relative;background:rgba(82,41,132,.10);
+    border-left:3px solid var(--brand-bright);border-radius:0 6px 6px 0;
+    padding:22px 26px 18px;margin-bottom:16px;overflow:hidden;
+    opacity:0;animation:fadeUp .35s ease .2s forwards;
   }
-  .modal-bullets li::before{
-    content:'→';position:absolute;left:0;top:0;color:var(--brand-bright);font-weight:700;
+  .modal.test .modal-narr{background:rgba(244,201,93,.08);border-left-color:var(--accent)}
+  .modal.core .modal-narr{background:rgba(95,216,168,.08);border-left-color:var(--ok)}
+  .narr-stack{position:relative;min-height:56px}
+  .narr-line{
+    position:absolute;inset:0;display:flex;align-items:center;
+    font-size:1.04rem;color:var(--text-0);font-weight:400;line-height:1.45;
+    opacity:0;transform:translateY(8px);
+    transition:opacity .45s ease,transform .45s ease;
   }
-  .modal.test .modal-bullets li::before{color:var(--accent)}
-  .modal.core .modal-bullets li::before{color:var(--ok)}
+  .narr-line.active{opacity:1;transform:translateY(0)}
+  .narr-dots{display:flex;gap:6px;margin-top:14px}
+  .narr-dots span{
+    width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.18);
+    transition:background .25s,width .25s;
+  }
+  .narr-dots span.active{background:var(--brand-bright);width:18px;border-radius:3px}
+  .modal.test .narr-dots span.active{background:var(--accent)}
+  .modal.core .narr-dots span.active{background:var(--ok)}
+
   .modal-meta{
     background:rgba(10,10,18,.55);border:1px solid var(--line);border-radius:8px;
     padding:14px 16px;display:flex;flex-direction:column;gap:10px;
-    opacity:0;animation:fadeUp .35s ease .5s forwards;
+    opacity:0;animation:fadeUp .35s ease .4s forwards;
   }
   .modal-meta .mm-row{display:flex;justify-content:space-between;gap:14px;align-items:baseline}
   .modal-meta .mm-label{font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--text-2);font-weight:600;flex:0 0 auto}
@@ -604,23 +618,23 @@
         <div class="blackbox bb-prod">
           <span class="bb-label">Producción</span>
           <div class="src-row" data-source="osm">
-            <div><div class="src-name">OpenStreetMap</div><div class="src-sub">Overpass · POIs + tags</div></div>
+            <div><div class="src-name">OpenStreetMap</div><div class="src-sub">Catálogo abierto</div></div>
             <div class="src-pill">tiempo real</div>
           </div>
           <div class="src-row" data-source="overture">
-            <div><div class="src-name">Overture Maps</div><div class="src-sub">Places dataset abierto</div></div>
+            <div><div class="src-name">Overture Maps</div><div class="src-sub">Dataset global</div></div>
             <div class="src-pill">trimestral</div>
           </div>
           <div class="src-row" data-source="gplaces">
-            <div><div class="src-name">Google Places API</div><div class="src-sub">business_status · vigencia</div></div>
-            <div class="src-pill">mensual rotatorio</div>
+            <div><div class="src-name">Google Places API</div><div class="src-sub">Valida vigencia</div></div>
+            <div class="src-pill">mensual</div>
           </div>
         </div>
 
         <div class="blackbox bb-test">
           <span class="bb-label">Para testear</span>
           <div class="src-row" data-source="dataforseo">
-            <div><div class="src-name">Web Intelligence</div><div class="src-sub">DataForSEO · SERP · backlinks</div></div>
+            <div><div class="src-name">Web Intelligence</div><div class="src-sub">DataForSEO · SEO</div></div>
             <div class="src-pill">semanal</div>
           </div>
           <div class="src-row" data-source="citas-ia">
@@ -629,22 +643,22 @@
           </div>
           <div class="src-row" data-source="trackeo">
             <div><div class="src-name">Trackeo de tráfico</div><div class="src-sub">HERE · TomTom</div></div>
-            <div class="src-pill">overlay 15 min</div>
+            <div class="src-pill">tiempo real</div>
           </div>
         </div>
 
         <div class="blackbox bb-core">
           <span class="bb-label">Infraestructura</span>
           <div class="src-row" data-source="donweb">
-            <div><div class="src-name">Don Web</div><div class="src-sub">VPS — host del backend</div></div>
+            <div><div class="src-name">Don Web</div><div class="src-sub">Host del backend</div></div>
             <div class="src-pill">always-on</div>
           </div>
           <div class="src-row" data-source="postgres">
-            <div><div class="src-name">PostgreSQL + PostGIS</div><div class="src-sub">Base única · POIs + reportes</div></div>
+            <div><div class="src-name">PostgreSQL + PostGIS</div><div class="src-sub">Base única auditable</div></div>
             <div class="src-pill">geoespacial</div>
           </div>
           <div class="src-row" data-source="n8n">
-            <div><div class="src-name">n8n</div><div class="src-sub">Orquestador de scrapers + API</div></div>
+            <div><div class="src-name">n8n</div><div class="src-sub">Orquestador de flujos</div></div>
             <div class="src-pill">workflows</div>
           </div>
         </div>
@@ -854,10 +868,11 @@
     </header>
     <div class="modal-body">
       <figure class="modal-figure" id="m-figure"></figure>
-      <div class="modal-content-grid">
-        <ul class="modal-bullets" id="m-bullets"></ul>
-        <div class="modal-meta" id="m-meta"></div>
+      <div class="modal-narr" id="m-narr">
+        <div class="narr-stack" id="m-narr-stack"></div>
+        <div class="narr-dots" id="m-narr-dots"></div>
       </div>
+      <div class="modal-meta" id="m-meta"></div>
     </div>
   </div>
 </div>
@@ -1030,107 +1045,110 @@
 
   const SOURCES = {
     'osm':{
-      color:'prod', eyebrow:'Producción · Capa base abierta', title:'OpenStreetMap',
-      sub:'Base argentina de POIs mantenida por la comunidad, accesible vía Overpass.',
+      color:'prod', eyebrow:'Producción · Catálogo abierto', title:'OpenStreetMap',
+      sub:'El catálogo de locales que mantiene la comunidad.',
+      video:'assets/osm.mp4',
       image:'assets/02_overpass_mendoza_mcdonalds_12tags.png',
-      annotations:[{x:30, y:42, dy:30, text:'Hasta 12 tags por POI'}],
-      bullets:[
-        'Capa base más densa del país, sin contratos ni paywall',
-        'Categorías estandarizadas (amenity=*, shop=*, building=*)',
-        'Limitación: tags incompletos en localidades pequeñas — se cruza con Overture y Google'
+      annotations:[{x:30, y:42, dy:28, text:'12 tags por POI'}],
+      narration:[
+        'Es la capa base de nuestro mapa.',
+        'Trae los locales del país, mantenidos por la comunidad.',
+        'Gratuito, masivo, siempre disponible.'
       ],
-      meta:[['Tipo','POIs + tags'],['Cobertura','Nacional'],['Frecuencia','Comunitaria · tiempo real'],['Costo','Gratis · ~10k queries/día']]
+      meta:[['Tipo','POIs + tags'],['Cobertura','Nacional'],['Frecuencia','Tiempo real'],['Costo','Gratis']]
     },
     'overture':{
-      color:'prod', eyebrow:'Producción · Dataset abierto', title:'Overture Maps',
-      sub:'Iniciativa de Meta, Microsoft, Amazon y TomTom para estandarizar POIs globales.',
+      color:'prod', eyebrow:'Producción · Dataset global', title:'Overture Maps',
+      sub:'Consorcio de Meta, Microsoft, Amazon y TomTom.',
+      video:'assets/overture.mp4',
       image:'assets/07_colab_overture_composicion_mendoza.png',
-      annotations:[{x:55, y:32, dy:28, text:'POIs Meta + Microsoft consolidados'}],
-      bullets:[
-        'Cobertura complementaria a OSM, especialmente en zonas opacas',
-        'Schemas Place Theme (categorías, brand, websites) — listo para ETL',
-        'Releases trimestrales — requiere curaduría antes de cargar a Postgres'
+      annotations:[{x:55, y:32, dy:26, text:'Meta + Microsoft'}],
+      narration:[
+        'Complementa lo que OSM no cubre.',
+        'Releases trimestrales de un consorcio global.',
+        'Cierra los huecos en zonas menos mapeadas.'
       ],
-      meta:[['Tipo','POIs + atributos consolidados'],['Cobertura','Global'],['Frecuencia','Trimestral (releases)'],['Costo','Gratis · CDLA license']]
+      meta:[['Tipo','POIs consolidados'],['Cobertura','Global'],['Frecuencia','Trimestral'],['Costo','Gratis']]
     },
     'gplaces':{
-      color:'prod', eyebrow:'Producción · Validación de vigencia', title:'Google Places API',
-      sub:'El oráculo de business_status — el local sigue abierto o cerró permanentemente.',
+      color:'prod', eyebrow:'Producción · Vigencia', title:'Google Places API',
+      sub:'La señal más confiable de si un local sigue abierto.',
       image:'assets/01_google_places.png',
-      annotations:[{x:50, y:48, dy:26, text:'business_status: la señal más confiable'}],
-      bullets:[
-        'business_status (OPERATIONAL / CLOSED_PERMANENTLY) cierra el flanco de "datos no del todo confiables"',
-        'Refresh rotatorio: 1/12 del universo nacional por mes para distribuir costo',
-        'Sin contenido cacheado (ToS) — sólo guardamos el flag + fecha'
+      annotations:[{x:50, y:48, dy:26, text:'business_status'}],
+      narration:[
+        'Le pregunta a Google si el local sigue abierto.',
+        'Es nuestra señal más confiable de vigencia.',
+        'Una vez por mes, sobre un subconjunto rotativo.'
       ],
-      meta:[['Tipo','Status + horarios + sitio'],['Frecuencia','Mensual rotatorio'],['Free tier','5k Pro + 10k Essentials'],['Costo objetivo','US$0–56/mes']]
+      meta:[['Tipo','Status + horarios'],['Frecuencia','Mensual rotatorio'],['Free tier','5k–10k/mes'],['Costo','US$0–56/mes']]
     },
     'dataforseo':{
       color:'test', eyebrow:'Para testear · Inteligencia digital', title:'DataForSEO',
-      sub:'Huella SEO + perfil de backlinks de cada marca de la GAF.',
+      sub:'Huella SEO + backlinks por marca.',
       image:'assets/02_dataforseo.png',
-      annotations:[{x:50, y:45, dy:26, text:'SERP + Keywords + Backlinks'}],
-      bullets:[
-        'Ranking de cada marca por keywords del rubro ("franquicia cafetería Argentina"…)',
-        'Backlinks + Domain Analytics: perfil de autoridad por dominio',
-        'Pay-as-you-go (US$50 mínimo de depósito) — quema esperada US$20–30/mes'
+      annotations:[{x:50, y:45, dy:26, text:'SERPs + backlinks'}],
+      narration:[
+        'Mide cuánto pesa cada marca en internet.',
+        'Su ranking en Google, sus backlinks, sus keywords.',
+        'Inteligencia digital sobre las 178 marcas de la GAF.'
       ],
-      meta:[['Tipo','SERPs + keywords + backlinks'],['Cobertura','178 marcas GAF'],['Frecuencia','Semanal'],['Costo','~US$20–50/mes']]
+      meta:[['Tipo','SERPs + keywords'],['Cobertura','178 marcas GAF'],['Frecuencia','Semanal'],['Costo','~US$20–50/mes']]
     },
     'citas-ia':{
       color:'test', eyebrow:'Para testear · Visibilidad en IA', title:'Citas en IA',
-      sub:'Tracker mensual de menciones a cada marca en Claude y Perplexity.',
+      sub:'Tracker de menciones en Claude y Perplexity.',
       image:'assets/03_anthropic_claude.png',
       annotations:[{x:50, y:48, dy:26, text:'1 query/marca/mes'}],
-      bullets:[
-        '¿Claude menciona a esta franquicia cuando le preguntan por opciones del rubro?',
-        'Diversificación con Perplexity (modelo distinto, panel distinto, cita fuentes)',
-        'Feature diferencial vs. cualquier directorio o CRM tipo HubSpot'
+      narration:[
+        'Mide si la marca aparece cuando alguien le pregunta a un chatbot.',
+        'Tracker mensual sobre Claude y Perplexity.',
+        'Visibilidad en el nuevo lugar donde la gente busca.'
       ],
-      meta:[['Tipo','Menciones + ranking + fuentes'],['Modelos','Haiku · Sonnet · Sonar Pro'],['Frecuencia','Mensual'],['Costo','~US$10–40/mes']]
+      meta:[['Tipo','Menciones + ranking'],['Modelos','Claude · Perplexity'],['Frecuencia','Mensual'],['Costo','~US$10–40/mes']]
     },
     'trackeo':{
-      color:'test', eyebrow:'Para testear · Capa de tráfico', title:'Trackeo de tráfico',
-      sub:'Flujo vial en tiempo real como proxy de foot-traffic comercial.',
+      color:'test', eyebrow:'Para testear · Tráfico real', title:'Trackeo de tráfico',
+      sub:'Flujo vial frente al local en tiempo real.',
       image:'assets/05_here_traffic.png',
-      annotations:[{x:48, y:48, dy:26, text:'HERE 250k tx/mes · TomTom 50k tiles/día gratis'}],
-      bullets:[
-        'Capa overlay opcional: el usuario activa "Tráfico" y se renderiza el flujo de la avenida',
-        'HERE Traffic vs. TomTom Traffic — sweet spot en free tier para el MVP',
-        'Cache de 15 min en CDN para no consumir transacciones por usuario'
+      annotations:[{x:48, y:48, dy:26, text:'Free tier inicial'}],
+      narration:[
+        'Muestra el flujo de tráfico frente al local.',
+        'Proxy directo de cuánta gente pasa por la puerta.',
+        'Capa overlay sobre el mapa, opcional.'
       ],
-      meta:[['Tipo','Flow tiles + incidentes'],['Frecuencia','Tiempo real (cache 15 min)'],['MVP','US$0 (free tiers)'],['Producción','~US$300/mes']]
+      meta:[['Tipo','Flow tiles'],['Frecuencia','Tiempo real'],['MVP','US$0'],['Producción','~US$300/mes']]
     },
     'donweb':{
-      color:'core', eyebrow:'Infraestructura · Host argentino', title:'Don Web',
-      sub:'VPS donde corre todo el backend de FQC — base, orquestador y API.',
+      color:'core', eyebrow:'Infraestructura · Servidor', title:'Don Web',
+      sub:'El servidor donde vive todo el backend.',
       svg:SVG_DONWEB,
-      bullets:[
-        'VPS argentino — soberanía de datos y latencia baja para los usuarios locales',
-        'Reemplaza los JSON estáticos por una base viva, auto-actualizada por n8n',
-        'Stack: Docker + nginx + certbot + backups offsite (S3-compatible)'
+      narration:[
+        'Es el servidor donde vive todo el backend.',
+        'VPS argentina — soberanía de datos y baja latencia.',
+        'Base, orquestador y API, en un solo lugar.'
       ],
-      meta:[['Rol','Servidor backend'],['Componentes','Postgres + n8n + API'],['Soberanía','Datos en Argentina'],['Costo','A cotizar con FQC']]
+      meta:[['Rol','Servidor backend'],['Stack','Postgres + n8n + API'],['Soberanía','Datos en Argentina'],['Costo','A cotizar']]
     },
     'postgres':{
-      color:'core', eyebrow:'Infraestructura · Base auditable', title:'PostgreSQL + PostGIS',
-      sub:'Una sola base relacional + geoespacial, joineable y exportable.',
+      color:'core', eyebrow:'Infraestructura · Base de datos', title:'PostgreSQL + PostGIS',
+      sub:'Una sola base que junta todo.',
       svg:SVG_POSTGRES,
-      bullets:[
-        'Una base única: POIs + radios censales + marcas GAF + reportes — todo joineable',
-        'PostGIS para sjoin con isócronas, polígonos de catchment y distancias reales',
-        'Auditable por SQL plano, exportable a parquet/CSV, versionable con migraciones'
+      narration:[
+        'Una sola base que junta todo.',
+        'POIs, censo, marcas, reportes — todo joineable.',
+        'Auditable por SQL, exportable a CSV.'
       ],
-      meta:[['Tipo','Relacional + geoespacial'],['Joins','POIs ⟕ censo ⟕ competencia'],['Backups','Diarios offsite'],['Costo','Gratis (open source)']]
+      meta:[['Tipo','Relacional + geoespacial'],['Joins','POIs ⟕ censo ⟕ marcas'],['Backups','Diarios offsite'],['Costo','Gratis (open source)']]
     },
     'n8n':{
       color:'core', eyebrow:'Infraestructura · Orquestador', title:'n8n',
-      sub:'Pipeline visual de scrapers, validadores y refresh — sin código.',
+      sub:'El reloj automático que actualiza las bases.',
+      video:'assets/n8n.mp4',
       svg:SVG_N8N,
-      bullets:[
-        'Cada fuente es un workflow versionado: trigger → fetch → merge → upsert',
-        'Mensual rotatorio: validación Google Places + agentes Claude verificando POIs',
-        'Editable por el operador desde la UI — sin desplegar cada cambio'
+      narration:[
+        'El reloj automático del sistema.',
+        'Decide cuándo se actualiza cada fuente.',
+        'Editable visualmente, sin tocar código.'
       ],
       meta:[['Rol','Orquestador'],['Triggers','Cron · webhook · manual'],['Auditoría','Logs por ejecución'],['Costo','Gratis (self-hosted)']]
     }
@@ -1144,24 +1162,44 @@
   const mTitle = document.getElementById('m-title');
   const mSub = document.getElementById('m-sub');
   const mFigure = document.getElementById('m-figure');
-  const mBullets = document.getElementById('m-bullets');
+  const mNarrStack = document.getElementById('m-narr-stack');
+  const mNarrDots = document.getElementById('m-narr-dots');
   const mMeta = document.getElementById('m-meta');
 
-  function openModal(key){
-    const data = SOURCES[key];
-    if(!data) return;
-    modalEl.classList.remove('prod','test','core');
-    modalEl.classList.add(data.color || 'prod');
-    mEyebrow.textContent = data.eyebrow || '';
-    mTitle.textContent = data.title || '';
-    mSub.textContent = data.sub || '';
+  let narrTimer = null;
+  function startNarration(){
+    if(narrTimer){ clearInterval(narrTimer); narrTimer = null; }
+    const lines = mNarrStack.querySelectorAll('.narr-line');
+    const dots = mNarrDots.querySelectorAll('span');
+    if(!lines.length) return;
+    let idx = 0;
+    lines.forEach(l=>l.classList.remove('active'));
+    dots.forEach(d=>d.classList.remove('active'));
+    lines[0].classList.add('active');
+    if(dots[0]) dots[0].classList.add('active');
+    if(lines.length === 1) return;
+    narrTimer = setInterval(()=>{
+      lines[idx].classList.remove('active');
+      if(dots[idx]) dots[idx].classList.remove('active');
+      idx = (idx + 1) % lines.length;
+      lines[idx].classList.add('active');
+      if(dots[idx]) dots[idx].classList.add('active');
+    }, 3800);
+  }
+  function stopNarration(){
+    if(narrTimer){ clearInterval(narrTimer); narrTimer = null; }
+  }
 
+  function renderFigure(data){
     mFigure.innerHTML = '';
     mFigure.classList.remove('dark');
-    if(data.svg){
-      mFigure.classList.add('dark');
-      mFigure.innerHTML = data.svg;
-    } else if(data.image){
+    const renderImage = ()=>{
+      if(!data.image && !data.svg) return;
+      if(data.svg){
+        mFigure.classList.add('dark');
+        mFigure.innerHTML = data.svg;
+        return;
+      }
       const img = document.createElement('img');
       img.src = data.image;
       img.alt = data.title;
@@ -1176,14 +1214,45 @@
         ann.style.animationDelay = (0.45 + i*0.15) + 's';
         mFigure.appendChild(ann);
       });
+    };
+    if(data.video){
+      mFigure.classList.add('dark');
+      const v = document.createElement('video');
+      v.src = data.video;
+      v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true;
+      v.preload = 'metadata';
+      v.onerror = ()=>{
+        mFigure.classList.remove('dark');
+        v.remove();
+        renderImage();
+      };
+      mFigure.appendChild(v);
+    } else {
+      renderImage();
     }
+  }
 
-    mBullets.innerHTML = '';
-    (data.bullets || []).forEach((b,i)=>{
-      const li = document.createElement('li');
-      li.textContent = b;
-      li.style.animationDelay = (0.25 + i*0.15) + 's';
-      mBullets.appendChild(li);
+  function openModal(key){
+    const data = SOURCES[key];
+    if(!data) return;
+    modalEl.classList.remove('prod','test','core');
+    modalEl.classList.add(data.color || 'prod');
+    mEyebrow.textContent = data.eyebrow || '';
+    mTitle.textContent = data.title || '';
+    mSub.textContent = data.sub || '';
+
+    renderFigure(data);
+
+    // Narración cíclica
+    mNarrStack.innerHTML = '';
+    mNarrDots.innerHTML = '';
+    (data.narration || []).forEach((s,i)=>{
+      const p = document.createElement('p');
+      p.className = 'narr-line';
+      p.textContent = s;
+      mNarrStack.appendChild(p);
+      const dot = document.createElement('span');
+      mNarrDots.appendChild(dot);
     });
 
     mMeta.innerHTML = '';
@@ -1198,8 +1267,14 @@
 
     backdrop.classList.add('open');
     backdrop.setAttribute('aria-hidden','false');
+    // Arrancar narración después de que el modal sea visible
+    setTimeout(startNarration, 250);
   }
   function closeModal(){
+    stopNarration();
+    // Detener video si está reproduciendo
+    const v = mFigure.querySelector('video');
+    if(v){ try{ v.pause(); }catch(e){} }
     backdrop.classList.remove('open');
     backdrop.setAttribute('aria-hidden','true');
   }
