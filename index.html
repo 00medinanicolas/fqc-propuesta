@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Startup FQC — Propuesta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg-0:#0a0a12;
+    --bg-1:#12101d;
+    --bg-2:#1a1730;
+    --bg-3:#221c3d;
+    --line:#2a2540;
+    --line-2:#3a345a;
+    --text-0:#ece9f5;
+    --text-1:#b3aecb;
+    --text-2:#756f93;
+    --text-3:#4a4566;
+    --brand:#522984;
+    --brand-bright:#8b5cf6;
+    --brand-soft:rgba(139,92,246,.12);
+    --brand-glow:rgba(139,92,246,.35);
+    --accent:#f4c95d;
+    --ok:#5fd8a8;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:var(--bg-0);color:var(--text-0);font-family:'Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+  html{scroll-behavior:smooth}
+
+  /* ----------- Container scroll-snap ----------- */
+  .scroll-container{
+    height:100vh;
+    overflow-y:scroll;
+    scroll-snap-type:y mandatory;
+    scrollbar-width:none;
+  }
+  .scroll-container::-webkit-scrollbar{display:none}
+
+  section.slide{
+    height:100vh;
+    width:100%;
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:6vh 8vw;
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* Brand background motifs */
+  .bg-radial{
+    position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(circle at 18% 18%,rgba(139,92,246,.18),transparent 45%),
+      radial-gradient(circle at 82% 86%,rgba(82,41,132,.22),transparent 48%);
+  }
+  .bg-grid{
+    position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);
+    background-size:32px 32px;
+    mask-image:linear-gradient(160deg,#000 10%,transparent 72%);
+    -webkit-mask-image:linear-gradient(160deg,#000 10%,transparent 72%);
+    opacity:.55;
+  }
+
+  /* Persistent footer brand mark (small, lower-left of every slide) */
+  .corner-brand{
+    position:absolute;left:32px;bottom:24px;display:flex;align-items:center;gap:9px;z-index:5;opacity:.55;
+  }
+  .corner-brand svg{width:18px;height:auto}
+  .corner-brand .corner-text{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--text-2)}
+
+  /* Scroll-down indicator */
+  .scroll-cue{
+    position:absolute;left:50%;bottom:34px;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:8px;z-index:5;
+    color:var(--text-2);font-size:10px;letter-spacing:.32em;text-transform:uppercase;
+    animation:cuePulse 2.4s ease-in-out infinite;
+  }
+  .scroll-cue::after{
+    content:'';display:block;width:1px;height:36px;
+    background:linear-gradient(to bottom,var(--text-2),transparent);
+  }
+  @keyframes cuePulse{0%,100%{opacity:.45;transform:translate(-50%,0)}50%{opacity:.85;transform:translate(-50%,4px)}}
+
+  /* Slide counter (top-right) */
+  .slide-counter{
+    position:absolute;top:28px;right:32px;font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:.16em;color:var(--text-2);z-index:5;
+  }
+  .slide-counter b{color:var(--brand-bright);font-weight:500}
+
+  /* ============== SLIDE 1: LANDING ============== */
+  #s1{background:radial-gradient(ellipse at center,#15102a 0%,var(--bg-0) 70%)}
+  .landing-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;gap:36px}
+  .logo-wrap{
+    display:flex;align-items:center;gap:18px;
+    opacity:0;transform:translateY(12px);
+    animation:fadeUp .9s cubic-bezier(.22,1,.36,1) .25s forwards;
+  }
+  .logo-mark{width:48px;height:auto;filter:drop-shadow(0 0 16px rgba(139,92,246,.55))}
+  .logo-img{height:54px;width:auto;filter:brightness(0) invert(1)}
+  .landing-title{
+    font-size:clamp(2.6rem,5.8vw,4.6rem);
+    font-weight:800;letter-spacing:-.025em;line-height:1.04;
+    background:linear-gradient(180deg,#fff 0%,#b3aecb 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    opacity:0;transform:translateY(14px);
+    animation:fadeUp 1s cubic-bezier(.22,1,.36,1) .6s forwards;
+  }
+  .landing-sub{
+    font-size:clamp(1rem,1.6vw,1.18rem);font-weight:300;color:var(--text-1);
+    max-width:42ch;line-height:1.55;
+    opacity:0;transform:translateY(14px);
+    animation:fadeUp 1s cubic-bezier(.22,1,.36,1) 1s forwards;
+  }
+  .landing-meta{
+    margin-top:18px;color:var(--text-2);font-size:.82rem;
+    letter-spacing:.32em;text-transform:uppercase;text-align:center;
+    opacity:0;animation:fadeUp 1s ease 1.5s forwards;
+  }
+  .landing-meta em{font-style:normal;color:var(--brand-bright);font-weight:500}
+  @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+  /* ============== SLIDE 2: METODOLOGÍA EN 2 FASES ============== */
+  #s2{background:linear-gradient(160deg,var(--bg-0) 0%,#0e0a1e 100%)}
+  .s2-inner{position:relative;z-index:2;text-align:center;max-width:1100px;width:100%}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.74rem;letter-spacing:.32em;text-transform:uppercase;color:var(--brand-bright);margin-bottom:1.2rem;font-weight:600}
+  .eyebrow::before{content:'';width:24px;height:1px;background:var(--brand-bright)}
+  .eyebrow.no-line::before{display:none}
+  .slide-title{font-size:clamp(2rem,3.8vw,3rem);font-weight:800;letter-spacing:-.02em;line-height:1.08;margin-bottom:1.4rem;color:#fff}
+  .slide-sub{font-size:clamp(.96rem,1.3vw,1.08rem);color:var(--text-1);line-height:1.6;max-width:60ch;margin:0 auto}
+
+  .s2-diagram{
+    margin-top:7vh;display:flex;align-items:center;justify-content:center;gap:42px;
+  }
+  .s2-node{
+    padding:24px 36px;border:1px solid var(--line-2);border-radius:10px;
+    background:rgba(82,41,132,.08);min-width:240px;
+    position:relative;
+  }
+  .s2-node.phase1{border-color:var(--brand-bright);background:rgba(139,92,246,.14);box-shadow:0 0 0 1px rgba(139,92,246,.25),0 18px 44px rgba(82,41,132,.4)}
+  .s2-node .phase-tag{font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--text-2);margin-bottom:.6rem}
+  .s2-node.phase1 .phase-tag{color:var(--brand-bright)}
+  .s2-node .phase-name{font-size:1.4rem;font-weight:700;color:#fff;letter-spacing:-.01em}
+  .s2-node .phase-hint{font-size:.78rem;color:var(--text-2);margin-top:.4rem;letter-spacing:.04em}
+
+  .s2-arrow{
+    display:flex;flex-direction:column;align-items:center;color:var(--brand-bright);
+  }
+  .s2-arrow .arr-svg{width:96px;height:auto;opacity:0;animation:arrowSlide 1.6s cubic-bezier(.22,1,.36,1) .9s forwards}
+  .s2-arrow .arr-label{font-size:.66rem;letter-spacing:.32em;text-transform:uppercase;color:var(--text-2);margin-top:8px}
+  @keyframes arrowSlide{0%{opacity:0;transform:translateX(-22px)}100%{opacity:1;transform:translateX(0)}}
+
+  /* ============== SLIDE 3: COMPARATIVA ============== */
+  #s3{background:linear-gradient(180deg,#0e0a1e 0%,var(--bg-0) 100%)}
+  .s3-inner{position:relative;z-index:2;width:100%;max-width:1240px}
+  .s3-header{text-align:center;margin-bottom:5vh}
+  .s3-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:stretch;
+  }
+  .s3-col{
+    border:1px solid var(--line);border-radius:14px;padding:36px 32px;
+    background:rgba(18,16,29,.85);position:relative;
+    min-height:54vh;display:flex;flex-direction:column;
+  }
+  .s3-col.left{border-color:var(--brand);background:linear-gradient(160deg,rgba(82,41,132,.22) 0%,rgba(18,16,29,.85) 60%)}
+  .s3-col.right{border-color:var(--line-2)}
+  .s3-col-tag{
+    display:inline-flex;align-items:center;gap:8px;font-size:.66rem;letter-spacing:.32em;
+    text-transform:uppercase;color:var(--text-2);margin-bottom:6px;
+  }
+  .s3-col.left .s3-col-tag{color:var(--brand-bright)}
+  .s3-col-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
+  .s3-col-title{font-size:1.9rem;font-weight:800;color:#fff;letter-spacing:-.015em;margin-bottom:30px}
+  .s3-col.right .s3-col-title{color:var(--text-1)}
+
+  .s3-list{display:flex;flex-direction:column;gap:22px;flex:1}
+  .s3-item{opacity:0;transform:translateY(8px)}
+  .s3-item.visible{animation:typeIn .9s ease forwards}
+  @keyframes typeIn{to{opacity:1;transform:translateY(0)}}
+  .s3-item-name{
+    font-size:.84rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--brand-bright);margin-bottom:6px;
+  }
+  .s3-col.right .s3-item-name{color:var(--accent)}
+  .s3-item-desc{font-size:.99rem;color:var(--text-1);line-height:1.6;font-weight:300}
+  .s3-item-desc .typer{
+    display:inline-block;overflow:hidden;white-space:normal;
+    border-right:1.5px solid transparent;
+  }
+  .s3-item.visible .typer{
+    animation:caretBlink 1s steps(1) 5;
+    border-right-color:var(--brand-bright);
+  }
+  @keyframes caretBlink{0%,49%{border-right-color:var(--brand-bright)}50%,100%{border-right-color:transparent}}
+
+  /* ============== SLIDE 4: FLUJO DE DATOS ============== */
+  #s4{background:linear-gradient(160deg,var(--bg-0) 0%,#0c0a1a 100%)}
+  .s4-inner{position:relative;z-index:2;width:100%;max-width:1320px}
+  .s4-header{text-align:center;margin-bottom:3.5vh}
+  .s4-header .slide-sub{font-style:italic;color:var(--text-1)}
+
+  .s4-flow{
+    display:grid;grid-template-columns:1.05fr 0.85fr 1.1fr;gap:22px;align-items:stretch;
+    margin-bottom:18px;
+  }
+  .blackbox{
+    border:1px dashed var(--line-2);border-radius:12px;padding:18px 18px 14px;
+    background:rgba(10,10,18,.5);position:relative;
+  }
+  .blackbox.bb-prod{border-color:rgba(139,92,246,.45);background:rgba(82,41,132,.08)}
+  .blackbox.bb-test{border-color:rgba(244,201,93,.4);background:rgba(244,201,93,.04)}
+  .blackbox.bb-core{border-color:rgba(95,216,168,.5);background:rgba(95,216,168,.05);border-style:solid}
+  .bb-label{
+    position:absolute;top:-9px;left:14px;padding:2px 8px;font-size:.62rem;letter-spacing:.28em;
+    text-transform:uppercase;font-weight:700;background:var(--bg-0);
+  }
+  .blackbox.bb-prod .bb-label{color:var(--brand-bright)}
+  .blackbox.bb-test .bb-label{color:var(--accent)}
+  .blackbox.bb-core .bb-label{color:var(--ok)}
+
+  .src-row{display:flex;align-items:center;justify-content:space-between;padding:9px 4px;border-bottom:1px solid var(--line);gap:10px}
+  .src-row:last-child{border-bottom:0}
+  .src-name{font-size:.86rem;font-weight:600;color:#fff;letter-spacing:.01em}
+  .src-sub{font-size:.7rem;color:var(--text-2);margin-top:1px}
+  .src-pill{
+    font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--text-1);
+    background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.22);
+    padding:3px 8px;border-radius:3px;white-space:nowrap;
+  }
+  .bb-test .src-pill{background:rgba(244,201,93,.08);border-color:rgba(244,201,93,.28);color:var(--accent)}
+  .bb-core .src-pill{background:rgba(95,216,168,.08);border-color:rgba(95,216,168,.28);color:var(--ok)}
+
+  /* Interactive source rows */
+  .src-row{cursor:pointer;transition:background .2s,transform .15s;border-radius:6px;margin:0 -8px;padding:9px 12px}
+  .src-row:hover{background:rgba(139,92,246,.10)}
+  .bb-test .src-row:hover{background:rgba(244,201,93,.08)}
+  .bb-core .src-row:hover{background:rgba(95,216,168,.07)}
+  .src-row:active{transform:scale(.99)}
+
+  .s4-hint{
+    margin-top:24px;text-align:center;font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--text-2);
+  }
+  .s4-hint::before{
+    content:'';display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--brand-bright);box-shadow:0 0 12px var(--brand-glow);
+    margin-right:10px;vertical-align:middle;
+    animation:pulseDot 1.8s ease-in-out infinite;
+  }
+  @keyframes pulseDot{0%,100%{opacity:.55}50%{opacity:1}}
+  .s4-foot{
+    margin-top:14px;font-size:.74rem;color:var(--text-3);text-align:center;
+    line-height:1.55;max-width:780px;margin-left:auto;margin-right:auto;font-style:italic;
+  }
+  .s4-foot strong{font-style:normal;color:var(--text-2);font-weight:500;letter-spacing:.04em}
+
+  /* =========== Modal =========== */
+  .modal-backdrop{
+    position:fixed;inset:0;background:rgba(7,5,18,.78);backdrop-filter:blur(10px);
+    z-index:1000;display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transition:opacity .25s;padding:5vh 4vw;
+  }
+  .modal-backdrop.open{opacity:1;pointer-events:auto}
+  .modal{
+    background:linear-gradient(160deg,#1a1730 0%,#0e0a1e 100%);
+    border:1px solid var(--brand);border-radius:14px;
+    max-width:760px;width:100%;max-height:90vh;overflow-y:auto;position:relative;
+    transform:translateY(22px) scale(.97);transition:transform .32s cubic-bezier(.22,1,.36,1),border-color .25s;
+    scrollbar-width:thin;scrollbar-color:var(--brand) transparent;
+  }
+  .modal-backdrop.open .modal{transform:translateY(0) scale(1)}
+  .modal::-webkit-scrollbar{width:6px}
+  .modal::-webkit-scrollbar-thumb{background:var(--brand);border-radius:3px}
+  .modal.prod{border-color:rgba(139,92,246,.55);box-shadow:0 0 0 1px rgba(139,92,246,.25),0 30px 80px rgba(0,0,0,.55)}
+  .modal.test{border-color:rgba(244,201,93,.55);box-shadow:0 0 0 1px rgba(244,201,93,.25),0 30px 80px rgba(0,0,0,.55)}
+  .modal.core{border-color:rgba(95,216,168,.55);box-shadow:0 0 0 1px rgba(95,216,168,.25),0 30px 80px rgba(0,0,0,.55)}
+
+  .modal-close{
+    position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;
+    border:1px solid var(--line-2);background:rgba(10,10,18,.6);color:var(--text-1);
+    font-size:18px;cursor:pointer;line-height:1;
+    transition:background .2s,color .2s,border-color .2s,transform .15s;z-index:10;
+    display:flex;align-items:center;justify-content:center;font-family:inherit;
+  }
+  .modal-close:hover{background:var(--brand-bright);border-color:var(--brand-bright);color:#fff;transform:rotate(90deg)}
+
+  .modal-header{padding:30px 36px 16px}
+  .modal-eyebrow{
+    font-size:.66rem;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--brand-bright);font-weight:600;margin-bottom:.7rem;display:inline-block;
+  }
+  .modal.test .modal-eyebrow{color:var(--accent)}
+  .modal.core .modal-eyebrow{color:var(--ok)}
+  .modal-title{font-size:1.85rem;font-weight:800;color:#fff;letter-spacing:-.018em;line-height:1.06;margin-bottom:.55rem}
+  .modal-sub{font-size:.96rem;color:var(--text-1);font-weight:300;line-height:1.5}
+
+  .modal-body{padding:0 36px 32px}
+  .modal-figure{
+    position:relative;margin:14px 0 22px;border-radius:8px;overflow:hidden;
+    background:#fff;border:1px solid var(--line);min-height:200px;
+    opacity:0;animation:figFade .35s ease .12s forwards;
+  }
+  .modal-figure.dark{background:#06060e}
+  .modal-figure img{display:block;width:100%;height:auto;max-height:340px;object-fit:contain;background:#fff}
+  .modal-figure svg.svg-illu{display:block;width:100%;height:auto}
+  @keyframes figFade{to{opacity:1}}
+
+  /* Annotations — positioned via percentages */
+  .modal-annot{
+    position:absolute;font-size:.72rem;font-weight:600;letter-spacing:.04em;
+    color:#fff;background:var(--brand-bright);
+    padding:5px 9px;border-radius:3px;white-space:nowrap;pointer-events:none;
+    transform:translate(-50%,-50%);
+    opacity:0;animation:annotIn .4s ease forwards;
+    box-shadow:0 4px 14px rgba(0,0,0,.4);
+  }
+  .modal.test .modal-annot{background:var(--accent);color:#1a1408}
+  .modal.core .modal-annot{background:var(--ok);color:#06231a}
+  .modal-annot::before{
+    content:'';position:absolute;width:1.5px;background:currentColor;opacity:.85;
+    left:50%;top:100%;height:var(--ann-len,28px);transform-origin:top center;
+    transform:translateX(-50%) rotate(var(--ann-rot,0deg));
+  }
+  .modal-annot.up::before{top:auto;bottom:100%;transform-origin:bottom center}
+  @keyframes annotIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.85)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+
+  .modal-content-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:flex-start}
+  .modal-bullets{display:flex;flex-direction:column;gap:11px;list-style:none}
+  .modal-bullets li{
+    padding-left:22px;position:relative;font-size:.93rem;color:var(--text-1);
+    line-height:1.55;font-weight:300;
+    opacity:0;transform:translateY(6px);animation:fadeUp .35s ease forwards;
+  }
+  .modal-bullets li::before{
+    content:'→';position:absolute;left:0;top:0;color:var(--brand-bright);font-weight:700;
+  }
+  .modal.test .modal-bullets li::before{color:var(--accent)}
+  .modal.core .modal-bullets li::before{color:var(--ok)}
+  .modal-meta{
+    background:rgba(10,10,18,.55);border:1px solid var(--line);border-radius:8px;
+    padding:14px 16px;display:flex;flex-direction:column;gap:10px;
+    opacity:0;animation:fadeUp .35s ease .5s forwards;
+  }
+  .modal-meta .mm-row{display:flex;justify-content:space-between;gap:14px;align-items:baseline}
+  .modal-meta .mm-label{font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--text-2);font-weight:600;flex:0 0 auto}
+  .modal-meta .mm-value{font-size:.82rem;color:var(--text-1);text-align:right;font-family:'JetBrains Mono',monospace;font-weight:400}
+
+  /* ============== SLIDE 5: COSTO DE TRABAJO ============== */
+  #s5{background:linear-gradient(180deg,#0c0a1a 0%,var(--bg-0) 100%)}
+  .s5-inner{position:relative;z-index:2;width:100%;max-width:1240px}
+  .s5-header{text-align:center;margin-bottom:3.5vh}
+  .cost-card{
+    border:1px solid var(--line-2);border-radius:14px;
+    background:linear-gradient(160deg,rgba(34,28,61,.6) 0%,rgba(18,16,29,.92) 100%);
+    overflow:hidden;
+  }
+  .cost-caption{
+    padding:18px 28px;font-size:.74rem;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--brand-bright);border-bottom:1px solid var(--line-2);font-weight:600;
+    text-align:center;background:rgba(10,10,18,.4);
+  }
+  .cost-table{width:100%;border-collapse:collapse;font-size:.92rem;table-layout:fixed}
+  .cost-table col.c-item{width:18%}
+  .cost-table col.c-desc{width:42%}
+  .cost-table col.c-plazo{width:11%}
+  .cost-table col.c-horas{width:10%}
+  .cost-table col.c-usd{width:19%}
+  .cost-table thead th{
+    font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;color:var(--text-2);
+    font-weight:600;text-align:left;padding:14px 22px;background:rgba(10,10,18,.55);
+    border-bottom:1px solid var(--line-2);
+  }
+  .cost-table thead th.right{text-align:right}
+  .cost-table tbody td{
+    padding:14px 22px;border-bottom:1px solid var(--line);vertical-align:middle;
+  }
+  .cost-table tbody tr:last-of-type td{border-bottom:0}
+  .ct-item{
+    font-weight:700;color:#fff;border-right:1px solid var(--line-2);
+    background:rgba(82,41,132,.10);vertical-align:middle;line-height:1.3;
+  }
+  .ct-item strong{display:block;font-size:.96rem;letter-spacing:.01em}
+  .ct-item .ct-obj{
+    display:block;font-weight:300;font-size:.76rem;color:var(--text-2);
+    margin-top:8px;line-height:1.45;font-style:italic;
+  }
+  .ct-desc{color:var(--text-1);font-weight:300;line-height:1.5}
+  .ct-plazo{color:var(--text-2);font-family:'JetBrains Mono',monospace;font-size:.82rem}
+  .ct-horas{color:var(--text-1);font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:500;text-align:right}
+  .ct-usd{color:#fff;font-family:'JetBrains Mono',monospace;font-size:.94rem;font-weight:600;text-align:right;letter-spacing:.02em}
+  .cost-table tr.ct-total td{
+    background:linear-gradient(90deg,rgba(82,41,132,.4) 0%,rgba(139,92,246,.16) 100%);
+    border-top:1px solid var(--brand-bright);padding:18px 22px;
+  }
+  .cost-table tr.ct-total .ct-item{
+    background:linear-gradient(90deg,rgba(82,41,132,.4) 0%,rgba(82,41,132,.25) 100%);
+    font-size:.78rem;letter-spacing:.28em;text-transform:uppercase;color:#fff;
+  }
+  .cost-table tr.ct-total .ct-desc{font-size:.82rem;color:var(--text-1);font-style:italic}
+  .cost-table tr.ct-total .ct-usd{color:var(--brand-bright);font-size:1.14rem}
+  .cost-notes{
+    margin-top:14px;font-size:.74rem;color:var(--text-2);text-align:center;
+    display:flex;justify-content:center;gap:32px;
+  }
+
+  /* ============== SLIDE 6: HERRAMIENTAS EXTERNAS ============== */
+  #s6{background:linear-gradient(160deg,#0c0a1a 0%,var(--bg-0) 50%,#10092a 100%)}
+  .s6-inner{position:relative;z-index:2;width:100%;max-width:1240px}
+  .s6-header{text-align:center;margin-bottom:5vh}
+  .s6-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .tool-card{
+    border:1px solid var(--line-2);border-radius:12px;padding:26px 22px;
+    background:linear-gradient(180deg,rgba(34,28,61,.45) 0%,rgba(18,16,29,.85) 100%);
+    display:flex;flex-direction:column;gap:14px;min-height:280px;
+    position:relative;overflow:hidden;
+  }
+  .tool-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--brand-bright);opacity:.35;
+  }
+  .tool-card .tc-num{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-2);letter-spacing:.18em}
+  .tool-card .tc-title{font-size:1.18rem;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.2}
+  .tool-card .tc-role{font-size:.82rem;color:var(--text-1);font-weight:300;line-height:1.55;flex:1}
+  .tool-card .tc-status{
+    margin-top:auto;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;
+    padding:6px 10px;border-radius:3px;background:rgba(244,201,93,.1);color:var(--accent);
+    border:1px solid rgba(244,201,93,.28);align-self:flex-start;font-weight:600;
+  }
+  .tool-card .tc-status.ready{background:rgba(95,216,168,.1);color:var(--ok);border-color:rgba(95,216,168,.28)}
+
+  .s6-footer{
+    margin-top:5vh;text-align:center;font-size:.84rem;color:var(--text-2);max-width:60ch;margin-left:auto;margin-right:auto;line-height:1.6;
+  }
+  .s6-footer strong{color:var(--brand-bright);font-weight:600}
+
+</style>
+</head>
+<body>
+
+<div class="scroll-container" id="scroll">
+
+  <!-- ============== SLIDE 1 — LANDING ============== -->
+  <section class="slide" id="s1" data-idx="1">
+    <div class="bg-radial"></div>
+    <div class="bg-grid"></div>
+
+    <div class="slide-counter"><b>01</b> / 06</div>
+
+    <div class="landing-inner">
+      <div class="logo-wrap">
+        <svg class="logo-mark" viewBox="0 0 25 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M0.715 10.934L18.797 0.276L24.824 3.828L6.743 14.486L0.715 10.934Z" fill="#8b5cf6"/>
+          <path d="M6.742 21.589L18.796 14.485L24.824 18.037L12.769 25.143L6.742 21.589Z" fill="#8b5cf6"/>
+          <path d="M0.715 10.934V25.143L6.743 28.695V14.486L0.715 10.934Z" fill="#8b5cf6"/>
+          <path d="M12.769 25.143V32.247L6.742 28.695V21.59L12.769 25.143Z" fill="#8b5cf6"/>
+          <path d="M12.769 32.247L18.796 28.695L24.824 32.247L18.796 35.799L12.769 32.247Z" fill="#8b5cf6"/>
+        </svg>
+        <img class="logo-img" alt="Franquicias que Crecen" id="logo-img"/>
+      </div>
+
+      <h1 class="landing-title">Startup FQC</h1>
+      <p class="landing-sub">Desarrollo de plataforma de inteligencia territorial para vendedores.</p>
+
+      <div class="landing-meta">
+        <em>Junio 2026</em>
+      </div>
+    </div>
+
+    <div class="corner-brand">
+      <svg viewBox="0 0 25 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M0.715 10.934L18.797 0.276L24.824 3.828L6.743 14.486L0.715 10.934Z" fill="#8b5cf6"/>
+        <path d="M6.742 21.589L18.796 14.485L24.824 18.037L12.769 25.143L6.742 21.589Z" fill="#8b5cf6"/>
+        <path d="M0.715 10.934V25.143L6.743 28.695V14.486L0.715 10.934Z" fill="#8b5cf6"/>
+        <path d="M12.769 25.143V32.247L6.742 28.695V21.59L12.769 25.143Z" fill="#8b5cf6"/>
+        <path d="M12.769 32.247L18.796 28.695L24.824 32.247L18.796 35.799L12.769 32.247Z" fill="#8b5cf6"/>
+      </svg>
+      <span class="corner-text">FQC · Propuesta</span>
+    </div>
+
+    <div class="scroll-cue">Scroll</div>
+  </section>
+
+  <!-- ============== SLIDE 2 — METODOLOGÍA EN 2 FASES ============== -->
+  <section class="slide" id="s2" data-idx="2">
+    <div class="bg-radial"></div>
+    <div class="bg-grid"></div>
+    <div class="slide-counter"><b>02</b> / 06</div>
+
+    <div class="s2-inner">
+      <div class="eyebrow no-line">Propuesta</div>
+      <h2 class="slide-title">Metodología en 2 fases</h2>
+
+      <div class="s2-diagram">
+        <div class="s2-node phase1">
+          <div class="phase-tag">Fase 1 — Esta propuesta</div>
+          <div class="phase-name">Startup</div>
+          <div class="phase-hint">Implementación piloto</div>
+        </div>
+
+        <div class="s2-arrow">
+          <svg class="arr-svg" viewBox="0 0 96 24" xmlns="http://www.w3.org/2000/svg">
+            <line x1="2" y1="12" x2="86" y2="12" stroke="#8b5cf6" stroke-width="2"/>
+            <polyline points="78,4 90,12 78,20" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="s2-node phase2">
+          <div class="phase-tag">Fase 2 — A definir</div>
+          <div class="phase-name">Mapa de Argentina</div>
+          <div class="phase-hint">Plataforma comercial</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="corner-brand">
+      <svg viewBox="0 0 25 36" xmlns="http://www.w3.org/2000/svg"><path d="M0.715 10.934L18.797 0.276L24.824 3.828L6.743 14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M6.742 21.589L18.796 14.485L24.824 18.037L12.769 25.143L6.742 21.589Z" fill="#8b5cf6"/><path d="M0.715 10.934V25.143L6.743 28.695V14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M12.769 25.143V32.247L6.742 28.695V21.59L12.769 25.143Z" fill="#8b5cf6"/><path d="M12.769 32.247L18.796 28.695L24.824 32.247L18.796 35.799L12.769 32.247Z" fill="#8b5cf6"/></svg>
+      <span class="corner-text">FQC · Metodología</span>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 3 — COMPARATIVA STARTUP / PLATAFORMA ============== -->
+  <section class="slide" id="s3" data-idx="3">
+    <div class="bg-radial"></div>
+    <div class="bg-grid"></div>
+    <div class="slide-counter"><b>03</b> / 06</div>
+
+    <div class="s3-inner">
+      <div class="s3-header">
+        <div class="eyebrow">Comparativa de fases</div>
+        <h2 class="slide-title">Diseño del desarrollo</h2>
+      </div>
+
+      <div class="s3-grid">
+        <!-- LEFT: STARTUP (Item + Descripción from Excel) -->
+        <div class="s3-col left">
+          <div class="s3-col-tag">Esta propuesta</div>
+          <div class="s3-col-title">Startup</div>
+          <div class="s3-list" data-typer-list="left">
+            <div class="s3-item">
+              <div class="s3-item-name">Plataforma</div>
+              <div class="s3-item-desc"><span class="typer">Diseño y personalización de la herramienta.</span></div>
+            </div>
+            <div class="s3-item">
+              <div class="s3-item-name">Meta 1</div>
+              <div class="s3-item-desc"><span class="typer">Visualización e integración de datos útiles para FQC.</span></div>
+            </div>
+            <div class="s3-item">
+              <div class="s3-item-name">Meta 2</div>
+              <div class="s3-item-desc"><span class="typer">Uso exitoso con cliente real.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: PLATAFORMA COMERCIAL -->
+        <div class="s3-col right">
+          <div class="s3-col-tag">A futuro</div>
+          <div class="s3-col-title">Plataforma comercial</div>
+          <div class="s3-list" data-typer-list="right">
+            <div class="s3-item">
+              <div class="s3-item-name">Objetivo</div>
+              <div class="s3-item-desc"><span class="typer">Cobertura total del sistema y funcionamiento integral de plataforma.</span></div>
+            </div>
+            <div class="s3-item">
+              <div class="s3-item-name">Requisito</div>
+              <div class="s3-item-desc"><span class="typer">Feedback y evaluación de Fase 1.</span></div>
+            </div>
+            <div class="s3-item">
+              <div class="s3-item-name">Limitación</div>
+              <div class="s3-item-desc"><span class="typer">Análisis de costos externos y definición de herramientas ad hoc por clientes puntuales.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="corner-brand">
+      <svg viewBox="0 0 25 36" xmlns="http://www.w3.org/2000/svg"><path d="M0.715 10.934L18.797 0.276L24.824 3.828L6.743 14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M6.742 21.589L18.796 14.485L24.824 18.037L12.769 25.143L6.742 21.589Z" fill="#8b5cf6"/><path d="M0.715 10.934V25.143L6.743 28.695V14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M12.769 25.143V32.247L6.742 28.695V21.59L12.769 25.143Z" fill="#8b5cf6"/><path d="M12.769 32.247L18.796 28.695L24.824 32.247L18.796 35.799L12.769 32.247Z" fill="#8b5cf6"/></svg>
+      <span class="corner-text">FQC · Alcance</span>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 4 — FLUJO DE DATOS ============== -->
+  <section class="slide" id="s4" data-idx="4">
+    <div class="bg-radial"></div>
+    <div class="bg-grid"></div>
+    <div class="slide-counter"><b>04</b> / 06</div>
+
+    <div class="s4-inner">
+      <div class="s4-header">
+        <div class="eyebrow">Caja negra</div>
+        <h2 class="slide-title">Flujo de datos</h2>
+        <p class="slide-sub">Ahora sí, los datos claros.</p>
+      </div>
+
+      <!-- 3 columnas: producción / testeo / infra -->
+      <div class="s4-flow">
+        <div class="blackbox bb-prod">
+          <span class="bb-label">Producción</span>
+          <div class="src-row" data-source="osm">
+            <div><div class="src-name">OpenStreetMap</div><div class="src-sub">Overpass · POIs + tags</div></div>
+            <div class="src-pill">tiempo real</div>
+          </div>
+          <div class="src-row" data-source="overture">
+            <div><div class="src-name">Overture Maps</div><div class="src-sub">Places dataset abierto</div></div>
+            <div class="src-pill">trimestral</div>
+          </div>
+          <div class="src-row" data-source="gplaces">
+            <div><div class="src-name">Google Places API</div><div class="src-sub">business_status · vigencia</div></div>
+            <div class="src-pill">mensual rotatorio</div>
+          </div>
+        </div>
+
+        <div class="blackbox bb-test">
+          <span class="bb-label">Para testear</span>
+          <div class="src-row" data-source="dataforseo">
+            <div><div class="src-name">Web Intelligence</div><div class="src-sub">DataForSEO · SERP · backlinks</div></div>
+            <div class="src-pill">semanal</div>
+          </div>
+          <div class="src-row" data-source="citas-ia">
+            <div><div class="src-name">Citas en IA</div><div class="src-sub">Claude · Perplexity</div></div>
+            <div class="src-pill">mensual</div>
+          </div>
+          <div class="src-row" data-source="trackeo">
+            <div><div class="src-name">Trackeo de tráfico</div><div class="src-sub">HERE · TomTom</div></div>
+            <div class="src-pill">overlay 15 min</div>
+          </div>
+        </div>
+
+        <div class="blackbox bb-core">
+          <span class="bb-label">Infraestructura</span>
+          <div class="src-row" data-source="donweb">
+            <div><div class="src-name">Don Web</div><div class="src-sub">VPS — host del backend</div></div>
+            <div class="src-pill">always-on</div>
+          </div>
+          <div class="src-row" data-source="postgres">
+            <div><div class="src-name">PostgreSQL + PostGIS</div><div class="src-sub">Base única · POIs + reportes</div></div>
+            <div class="src-pill">geoespacial</div>
+          </div>
+          <div class="src-row" data-source="n8n">
+            <div><div class="src-name">n8n</div><div class="src-sub">Orquestador de scrapers + API</div></div>
+            <div class="src-pill">workflows</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="s4-hint">Tocá cualquier elemento para ver el detalle</div>
+      <div class="s4-foot">
+        <strong>Footfall por celulares</strong> (Foursquare / Cuebiq) disponible como upgrade Enterprise para zonas TOP · <strong>Access Power</strong> para auditoría visual de queries SQL sobre la base.
+      </div>
+    </div>
+
+    <div class="corner-brand">
+      <svg viewBox="0 0 25 36" xmlns="http://www.w3.org/2000/svg"><path d="M0.715 10.934L18.797 0.276L24.824 3.828L6.743 14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M6.742 21.589L18.796 14.485L24.824 18.037L12.769 25.143L6.742 21.589Z" fill="#8b5cf6"/><path d="M0.715 10.934V25.143L6.743 28.695V14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M12.769 25.143V32.247L6.742 28.695V21.59L12.769 25.143Z" fill="#8b5cf6"/><path d="M12.769 32.247L18.796 28.695L24.824 32.247L18.796 35.799L12.769 32.247Z" fill="#8b5cf6"/></svg>
+      <span class="corner-text">FQC · Flujo</span>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 5 — COSTO DE TRABAJO ============== -->
+  <section class="slide" id="s5" data-idx="5">
+    <div class="bg-radial"></div>
+    <div class="bg-grid"></div>
+    <div class="slide-counter"><b>05</b> / 06</div>
+
+    <div class="s5-inner">
+      <div class="s5-header">
+        <div class="eyebrow">Inversión Fase 1</div>
+        <h2 class="slide-title">Costo de trabajo desagregado</h2>
+      </div>
+
+      <div class="cost-card">
+        <div class="cost-caption">Startup Plataforma FQC</div>
+        <table class="cost-table">
+          <colgroup>
+            <col class="c-item"/>
+            <col class="c-desc"/>
+            <col class="c-plazo"/>
+            <col class="c-horas"/>
+            <col class="c-usd"/>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Descripción</th>
+              <th>Plazo</th>
+              <th class="right">Horas*</th>
+              <th class="right">Costo**</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Plataforma -->
+            <tr>
+              <td class="ct-item"><strong>Plataforma</strong></td>
+              <td class="ct-desc">Diseño y personalización de la herramienta.</td>
+              <td class="ct-plazo">Mes 0</td>
+              <td class="ct-horas">60 hs</td>
+              <td class="ct-usd">USD 6.000</td>
+            </tr>
+
+            <!-- Idea + Desarrollo (5 sub-tareas) -->
+            <tr>
+              <td class="ct-item" rowspan="5">
+                <strong>Idea + Desarrollo</strong>
+                <span class="ct-obj">Visualización e integración de datos útiles para FQC.</span>
+              </td>
+              <td class="ct-desc">Migración a servidor de FQC, alta de usuarios, permisos, seguridad.</td>
+              <td class="ct-plazo">Semana 1</td>
+              <td class="ct-horas">20 hs</td>
+              <td class="ct-usd">USD 400</td>
+            </tr>
+            <tr>
+              <td class="ct-desc">Investigación y prueba de otras herramientas: SEO, trackeo, web intelligence.</td>
+              <td class="ct-plazo">Semana 2</td>
+              <td class="ct-horas">20 hs</td>
+              <td class="ct-usd">USD 400</td>
+            </tr>
+            <tr>
+              <td class="ct-desc">Ajustes de bases de datos auditables y categorías corregidas.</td>
+              <td class="ct-plazo">Semana 3</td>
+              <td class="ct-horas">20 hs</td>
+              <td class="ct-usd">USD 400</td>
+            </tr>
+            <tr>
+              <td class="ct-desc">Herramientas de análisis: demográficos, económicos, gráficos.</td>
+              <td class="ct-plazo">Semana 4</td>
+              <td class="ct-horas">20 hs</td>
+              <td class="ct-usd">USD 400</td>
+            </tr>
+            <tr>
+              <td class="ct-desc">Automatización de actualizaciones. Testeo.</td>
+              <td class="ct-plazo">Semana 1-2</td>
+              <td class="ct-horas">40 hs</td>
+              <td class="ct-usd">USD 800</td>
+            </tr>
+
+            <!-- Evaluación, mantenimiento y simulación (3 sub-tareas) -->
+            <tr>
+              <td class="ct-item" rowspan="3">
+                <strong>Evaluación, mantenimiento y simulación</strong>
+                <span class="ct-obj">Uso exitoso con cliente real.</span>
+              </td>
+              <td class="ct-desc">Testeo de la plataforma; incorporación de herramientas aprobadas.</td>
+              <td class="ct-plazo">Semana 3</td>
+              <td class="ct-horas">10 hs</td>
+              <td class="ct-usd">USD 150</td>
+            </tr>
+            <tr>
+              <td class="ct-desc">Evaluación de costos para extensión. Ajustes finales y reporte.</td>
+              <td class="ct-plazo">Semana 3</td>
+              <td class="ct-horas">10 hs</td>
+              <td class="ct-usd">USD 150</td>
+            </tr>
+            <tr>
+              <td class="ct-desc">Simulación de escenario junto a coordinador y/o vendedor.</td>
+              <td class="ct-plazo">A coordinar</td>
+              <td class="ct-horas">—</td>
+              <td class="ct-usd">—</td>
+            </tr>
+
+            <!-- Total -->
+            <tr class="ct-total">
+              <td class="ct-item"><strong>Total</strong></td>
+              <td class="ct-desc">Fase 1 · de la idea al cliente real</td>
+              <td class="ct-plazo">3 meses</td>
+              <td class="ct-horas">~ 200 hs</td>
+              <td class="ct-usd">USD 9.100</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cost-notes">
+        <span>* Se calculan 4 horas de trabajo por día.</span>
+        <span>** El costo no incluye herramientas pagas.</span>
+      </div>
+    </div>
+
+    <div class="corner-brand">
+      <svg viewBox="0 0 25 36" xmlns="http://www.w3.org/2000/svg"><path d="M0.715 10.934L18.797 0.276L24.824 3.828L6.743 14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M6.742 21.589L18.796 14.485L24.824 18.037L12.769 25.143L6.742 21.589Z" fill="#8b5cf6"/><path d="M0.715 10.934V25.143L6.743 28.695V14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M12.769 25.143V32.247L6.742 28.695V21.59L12.769 25.143Z" fill="#8b5cf6"/><path d="M12.769 32.247L18.796 28.695L24.824 32.247L18.796 35.799L12.769 32.247Z" fill="#8b5cf6"/></svg>
+      <span class="corner-text">FQC · Costo trabajo</span>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 6 — HERRAMIENTAS EXTERNAS ============== -->
+  <section class="slide" id="s6" data-idx="6">
+    <div class="bg-radial"></div>
+    <div class="bg-grid"></div>
+    <div class="slide-counter"><b>06</b> / 06</div>
+
+    <div class="s6-inner">
+      <div class="s6-header">
+        <div class="eyebrow">Costo separado</div>
+        <h2 class="slide-title">Herramientas adicionales</h2>
+        <p class="slide-sub">A cotizar durante el primer mes — depende del testeo de cada herramienta.</p>
+      </div>
+
+      <div class="s6-grid">
+        <div class="tool-card">
+          <span class="tc-num">01 / Infraestructura</span>
+          <div class="tc-title">Servidor Don Web</div>
+          <p class="tc-role">VPS donde vive todo el backend: Postgres + PostGIS, n8n, API. Reemplaza los JSON estáticos por una base viva auto-actualizada.</p>
+          <span class="tc-status ready">A cotizar con FQC</span>
+        </div>
+
+        <div class="tool-card">
+          <span class="tc-num">02 / Vigencia</span>
+          <div class="tc-title">Google Place API</div>
+          <p class="tc-role">Validación de business_status de cada POI. Cierra el flanco de “¿este local sigue abierto?” con la fuente más autoritativa del mercado.</p>
+          <span class="tc-status">Pendiente de testeo</span>
+        </div>
+
+        <div class="tool-card">
+          <span class="tc-num">03 / Web Intelligence</span>
+          <div class="tc-title">SEO</div>
+          <p class="tc-role">DataForSEO (SERP, backlinks) + monitoreo de citas en IA (Claude, Perplexity) para medir visibilidad digital por marca de la GAF.</p>
+          <span class="tc-status">Pendiente de testeo</span>
+        </div>
+
+        <div class="tool-card">
+          <span class="tc-num">04 / Tráfico</span>
+          <div class="tc-title">Tracking</div>
+          <p class="tc-role">Capa de tráfico vial (HERE / TomTom) y footfall opcional por celulares (Foursquare / Cuebiq) para clientes Enterprise.</p>
+          <span class="tc-status">Pendiente de testeo</span>
+        </div>
+      </div>
+
+      <div class="s6-footer">
+        Cada herramienta entra al stack <strong>solo después</strong> de evaluarse en la Semana 2 del Mes 1 y aprobarse en la Semana 3 del Mes 2.
+      </div>
+    </div>
+
+    <div class="corner-brand">
+      <svg viewBox="0 0 25 36" xmlns="http://www.w3.org/2000/svg"><path d="M0.715 10.934L18.797 0.276L24.824 3.828L6.743 14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M6.742 21.589L18.796 14.485L24.824 18.037L12.769 25.143L6.742 21.589Z" fill="#8b5cf6"/><path d="M0.715 10.934V25.143L6.743 28.695V14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M12.769 25.143V32.247L6.742 28.695V21.59L12.769 25.143Z" fill="#8b5cf6"/><path d="M12.769 32.247L18.796 28.695L24.824 32.247L18.796 35.799L12.769 32.247Z" fill="#8b5cf6"/></svg>
+      <span class="corner-text">FQC · Herramientas</span>
+    </div>
+  </section>
+
+</div>
+
+<!-- ========== MODAL ========== -->
+<div class="modal-backdrop" id="modal-backdrop" aria-hidden="true">
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-title">
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">×</button>
+    <header class="modal-header">
+      <span class="modal-eyebrow" id="m-eyebrow"></span>
+      <h3 class="modal-title" id="m-title"></h3>
+      <p class="modal-sub" id="m-sub"></p>
+    </header>
+    <div class="modal-body">
+      <figure class="modal-figure" id="m-figure"></figure>
+      <div class="modal-content-grid">
+        <ul class="modal-bullets" id="m-bullets"></ul>
+        <div class="modal-meta" id="m-meta"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ----- Embed FQC logo (PNG) as data-URI so the HTML is fully portable -----
+  // Placeholder: the PNG bytes are injected from the file when serving locally.
+  // Fallback to assets/fqc-logo.png if data-URI unavailable.
+  (function injectLogo(){
+    const img = document.getElementById('logo-img');
+    if(!img) return;
+    img.src = 'assets/fqc-logo.png';
+    img.onerror = ()=>{ img.style.display='none'; };
+  })();
+
+  // ----- Intersection Observer for animation triggers -----
+  const ioOptions = { root: document.getElementById('scroll'), threshold: 0.55 };
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('active');
+        triggerSlide(entry.target.id);
+      } else {
+        entry.target.classList.remove('active');
+      }
+    });
+  }, ioOptions);
+  document.querySelectorAll('section.slide').forEach(s=>io.observe(s));
+
+  function triggerSlide(id){
+    if(id === 's3') startTypewriter();
+  }
+
+  // ----- Typewriter on slide 3 -----
+  let typerStarted = false;
+  function startTypewriter(){
+    if(typerStarted) return;
+    typerStarted = true;
+    const lists = document.querySelectorAll('[data-typer-list]');
+    lists.forEach(list=>{
+      const items = list.querySelectorAll('.s3-item');
+      items.forEach((it,idx)=>{
+        setTimeout(()=>{
+          it.classList.add('visible');
+          const span = it.querySelector('.typer');
+          if(!span) return;
+          const full = span.textContent;
+          span.textContent = '';
+          let i = 0;
+          const speed = 18; // ms per char
+          (function step(){
+            if(i <= full.length){
+              span.textContent = full.slice(0,i);
+              i++;
+              setTimeout(step, speed);
+            } else {
+              span.style.borderRightColor = 'transparent';
+            }
+          })();
+        }, idx*180);
+      });
+    });
+  }
+
+  // ====================================================================
+  // SOURCES (Slide 4 modals)
+  // ====================================================================
+  const SVG_DONWEB = `<svg viewBox="0 0 480 260" xmlns="http://www.w3.org/2000/svg" class="svg-illu">
+    <defs><linearGradient id="bgdw" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a1730"/><stop offset="100%" stop-color="#0c0820"/></linearGradient></defs>
+    <rect width="480" height="260" fill="url(#bgdw)"/>
+    <g transform="translate(28,28)"><rect width="36" height="22" rx="3" fill="#74acdf"/><rect y="7" width="36" height="8" fill="#fff"/><circle cx="18" cy="11" r="3" fill="#f6b40e"/></g>
+    <text x="72" y="44" fill="#b3aecb" font-family="Inter" font-size="10" letter-spacing="3" font-weight="600">DATOS EN ARGENTINA</text>
+    <g transform="translate(170,68)">
+      <rect width="140" height="160" rx="6" fill="#15102a" stroke="#8b5cf6" stroke-width="1.4"/>
+      <g fill="#0a0a12" stroke="#3a345a" stroke-width=".6">
+        <rect x="10" y="10" width="120" height="22" rx="2"/><rect x="10" y="38" width="120" height="22" rx="2"/>
+        <rect x="10" y="66" width="120" height="22" rx="2"/><rect x="10" y="94" width="120" height="22" rx="2"/>
+        <rect x="10" y="122" width="120" height="22" rx="2"/>
+      </g>
+      <g fill="#5fd8a8"><circle cx="16" cy="21" r="2"/><circle cx="16" cy="49" r="2"/><circle cx="16" cy="77" r="2"/><circle cx="16" cy="105" r="2"/><circle cx="16" cy="133" r="2"/></g>
+      <g fill="#b3aecb" font-family="JetBrains Mono" font-size="9">
+        <text x="26" y="25">postgres + postgis</text><text x="26" y="53">n8n workflows</text>
+        <text x="26" y="81">api · fastapi</text><text x="26" y="109">nginx + certbot</text>
+        <text x="26" y="137">backups · s3</text>
+      </g>
+    </g>
+    <ellipse cx="240" cy="240" rx="100" ry="6" fill="#8b5cf6" opacity=".22"/>
+    <g font-family="Inter" font-size="10" fill="#8b5cf6" font-weight="700" letter-spacing="2">
+      <text x="76" y="146" text-anchor="end">STACK FQC</text>
+      <line x1="80" y1="143" x2="168" y2="143" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="3 3"/>
+    </g>
+    <g font-family="Inter" font-size="9" fill="#5fd8a8" font-weight="600" letter-spacing="2">
+      <text x="404" y="100" text-anchor="start">LATENCIA</text>
+      <text x="404" y="113" text-anchor="start" fill="#b3aecb" font-size="9" font-weight="400" letter-spacing=".5">vs CDN extranjero</text>
+      <line x1="400" y1="105" x2="312" y2="105" stroke="#5fd8a8" stroke-width="1" stroke-dasharray="3 3"/>
+    </g>
+  </svg>`;
+
+  const SVG_POSTGRES = `<svg viewBox="0 0 480 260" xmlns="http://www.w3.org/2000/svg" class="svg-illu">
+    <defs><linearGradient id="bgpg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0e1f1a"/><stop offset="100%" stop-color="#0a0a12"/></linearGradient></defs>
+    <rect width="480" height="260" fill="url(#bgpg)"/>
+    <g transform="translate(28,28)">
+      <rect width="424" height="180" rx="6" fill="#0e0a1e" stroke="#5fd8a8" stroke-width="1.2"/>
+      <rect width="424" height="32" rx="6" fill="#0a1a14"/><rect y="26" width="424" height="6" fill="#0a1a14"/>
+      <text x="18" y="21" fill="#5fd8a8" font-family="JetBrains Mono" font-size="11" font-weight="700">pois</text>
+      <text x="50" y="21" fill="#756f93" font-family="JetBrains Mono" font-size="9">— ~500.000 filas · UNA SOLA BASE</text>
+      <g font-family="JetBrains Mono" font-size="8.5" fill="#b3aecb" font-weight="700" letter-spacing="1">
+        <text x="18" y="50">id</text><text x="60" y="50">name</text><text x="200" y="50">geom</text>
+        <text x="312" y="50">status</text><text x="384" y="50">updated</text>
+      </g>
+      <line x1="12" y1="58" x2="412" y2="58" stroke="#2a2540" stroke-width=".5"/>
+      <g font-family="JetBrains Mono" font-size="9" fill="#ece9f5">
+        <text x="18" y="78">42081</text><text x="60" y="78">McDonalds Mendoza</text>
+        <text x="200" y="78" fill="#5fd8a8">POINT(-68.84 -32.89)</text>
+        <text x="312" y="78" fill="#5fd8a8">OPERATIONAL</text><text x="384" y="78" fill="#756f93">2026-06-01</text>
+        <text x="18" y="100">42082</text><text x="60" y="100">Mr. Dogs Centro</text>
+        <text x="200" y="100" fill="#5fd8a8">POINT(-68.85 -32.89)</text>
+        <text x="312" y="100" fill="#5fd8a8">OPERATIONAL</text><text x="384" y="100" fill="#756f93">2026-06-01</text>
+        <text x="18" y="122">42083</text><text x="60" y="122">Cafe Recoleta</text>
+        <text x="200" y="122" fill="#5fd8a8">POINT(-58.39 -34.59)</text>
+        <text x="312" y="122" fill="#f4708a">CLOSED_PERM.</text><text x="384" y="122" fill="#756f93">2026-05-22</text>
+        <text x="18" y="144" fill="#756f93">...</text>
+      </g>
+    </g>
+    <g transform="translate(28,222)" font-family="Inter" font-size="10" fill="#b3aecb">
+      <text font-weight="600" letter-spacing="2" fill="#756f93">JOIN GEOESPACIAL</text>
+      <text y="16" font-weight="400">pois  ⟕  radios_censales  ⟕  marcas_gaf</text>
+    </g>
+    <g transform="translate(372,222)">
+      <rect width="80" height="22" rx="3" fill="rgba(95,216,168,.18)" stroke="#5fd8a8" stroke-width=".8"/>
+      <text x="40" y="15" text-anchor="middle" fill="#5fd8a8" font-family="Inter" font-size="9" font-weight="700" letter-spacing="2">POSTGIS</text>
+    </g>
+  </svg>`;
+
+  const SVG_N8N = `<svg viewBox="0 0 480 260" xmlns="http://www.w3.org/2000/svg" class="svg-illu">
+    <defs>
+      <linearGradient id="bgn8" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1f1a0e"/><stop offset="100%" stop-color="#0a0a12"/></linearGradient>
+      <marker id="arrn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f4c95d"/></marker>
+    </defs>
+    <rect width="480" height="260" fill="url(#bgn8)"/>
+    <g transform="translate(24,110)"><rect width="78" height="40" rx="6" fill="#15102a" stroke="#f4c95d" stroke-width="1.3"/>
+      <text x="39" y="18" text-anchor="middle" fill="#f4c95d" font-family="Inter" font-size="9" font-weight="700" letter-spacing="2">CRON</text>
+      <text x="39" y="32" text-anchor="middle" fill="#b3aecb" font-family="JetBrains Mono" font-size="9">mensual</text></g>
+    <g transform="translate(140,40)"><rect width="110" height="40" rx="6" fill="#15102a" stroke="#8b5cf6" stroke-width="1"/>
+      <text x="55" y="18" text-anchor="middle" fill="#8b5cf6" font-family="Inter" font-size="9" font-weight="700" letter-spacing="1.5">OSM</text>
+      <text x="55" y="32" text-anchor="middle" fill="#756f93" font-family="JetBrains Mono" font-size="9">Overpass</text></g>
+    <g transform="translate(140,110)"><rect width="110" height="40" rx="6" fill="#15102a" stroke="#8b5cf6" stroke-width="1"/>
+      <text x="55" y="18" text-anchor="middle" fill="#8b5cf6" font-family="Inter" font-size="9" font-weight="700" letter-spacing="1.5">GOOGLE PLACES</text>
+      <text x="55" y="32" text-anchor="middle" fill="#756f93" font-family="JetBrains Mono" font-size="9">business_status</text></g>
+    <g transform="translate(140,180)"><rect width="110" height="40" rx="6" fill="#15102a" stroke="#8b5cf6" stroke-width="1"/>
+      <text x="55" y="18" text-anchor="middle" fill="#8b5cf6" font-family="Inter" font-size="9" font-weight="700" letter-spacing="1.5">OVERTURE</text>
+      <text x="55" y="32" text-anchor="middle" fill="#756f93" font-family="JetBrains Mono" font-size="9">release Q+1</text></g>
+    <g transform="translate(290,110)"><rect width="92" height="40" rx="6" fill="#15102a" stroke="#f4c95d" stroke-width="1.3"/>
+      <text x="46" y="18" text-anchor="middle" fill="#f4c95d" font-family="Inter" font-size="9" font-weight="700" letter-spacing="1.5">MERGE</text>
+      <text x="46" y="32" text-anchor="middle" fill="#b3aecb" font-family="JetBrains Mono" font-size="9">dedup + flag</text></g>
+    <g transform="translate(412,110)"><rect width="50" height="40" rx="6" fill="#15102a" stroke="#5fd8a8" stroke-width="1.3"/>
+      <text x="25" y="18" text-anchor="middle" fill="#5fd8a8" font-family="Inter" font-size="8" font-weight="700">DB</text>
+      <text x="25" y="32" text-anchor="middle" fill="#b3aecb" font-family="JetBrains Mono" font-size="8">UPSERT</text></g>
+    <g fill="none" stroke="#3a345a" stroke-width="1.2">
+      <path d="M 102 130 C 122 130, 122 60, 140 60" marker-end="url(#arrn)"/>
+      <path d="M 102 130 L 140 130" marker-end="url(#arrn)"/>
+      <path d="M 102 130 C 122 130, 122 200, 140 200" marker-end="url(#arrn)"/>
+      <path d="M 250 60 C 270 60, 270 130, 290 130" marker-end="url(#arrn)"/>
+      <path d="M 250 130 L 290 130" marker-end="url(#arrn)"/>
+      <path d="M 250 200 C 270 200, 270 130, 290 130" marker-end="url(#arrn)"/>
+      <path d="M 382 130 L 412 130" marker-end="url(#arrn)"/>
+    </g>
+    <text x="240" y="244" text-anchor="middle" fill="#756f93" font-family="Inter" font-size="9" letter-spacing="2.5" font-weight="600">WORKFLOW VERSIONADO · TRIGGER + AGREGADO + UPSERT</text>
+  </svg>`;
+
+  const SOURCES = {
+    'osm':{
+      color:'prod', eyebrow:'Producción · Capa base abierta', title:'OpenStreetMap',
+      sub:'Base argentina de POIs mantenida por la comunidad, accesible vía Overpass.',
+      image:'assets/02_overpass_mendoza_mcdonalds_12tags.png',
+      annotations:[{x:30, y:42, dy:30, text:'Hasta 12 tags por POI'}],
+      bullets:[
+        'Capa base más densa del país, sin contratos ni paywall',
+        'Categorías estandarizadas (amenity=*, shop=*, building=*)',
+        'Limitación: tags incompletos en localidades pequeñas — se cruza con Overture y Google'
+      ],
+      meta:[['Tipo','POIs + tags'],['Cobertura','Nacional'],['Frecuencia','Comunitaria · tiempo real'],['Costo','Gratis · ~10k queries/día']]
+    },
+    'overture':{
+      color:'prod', eyebrow:'Producción · Dataset abierto', title:'Overture Maps',
+      sub:'Iniciativa de Meta, Microsoft, Amazon y TomTom para estandarizar POIs globales.',
+      image:'assets/07_colab_overture_composicion_mendoza.png',
+      annotations:[{x:55, y:32, dy:28, text:'POIs Meta + Microsoft consolidados'}],
+      bullets:[
+        'Cobertura complementaria a OSM, especialmente en zonas opacas',
+        'Schemas Place Theme (categorías, brand, websites) — listo para ETL',
+        'Releases trimestrales — requiere curaduría antes de cargar a Postgres'
+      ],
+      meta:[['Tipo','POIs + atributos consolidados'],['Cobertura','Global'],['Frecuencia','Trimestral (releases)'],['Costo','Gratis · CDLA license']]
+    },
+    'gplaces':{
+      color:'prod', eyebrow:'Producción · Validación de vigencia', title:'Google Places API',
+      sub:'El oráculo de business_status — el local sigue abierto o cerró permanentemente.',
+      image:'assets/01_google_places.png',
+      annotations:[{x:50, y:48, dy:26, text:'business_status: la señal más confiable'}],
+      bullets:[
+        'business_status (OPERATIONAL / CLOSED_PERMANENTLY) cierra el flanco de "datos no del todo confiables"',
+        'Refresh rotatorio: 1/12 del universo nacional por mes para distribuir costo',
+        'Sin contenido cacheado (ToS) — sólo guardamos el flag + fecha'
+      ],
+      meta:[['Tipo','Status + horarios + sitio'],['Frecuencia','Mensual rotatorio'],['Free tier','5k Pro + 10k Essentials'],['Costo objetivo','US$0–56/mes']]
+    },
+    'dataforseo':{
+      color:'test', eyebrow:'Para testear · Inteligencia digital', title:'DataForSEO',
+      sub:'Huella SEO + perfil de backlinks de cada marca de la GAF.',
+      image:'assets/02_dataforseo.png',
+      annotations:[{x:50, y:45, dy:26, text:'SERP + Keywords + Backlinks'}],
+      bullets:[
+        'Ranking de cada marca por keywords del rubro ("franquicia cafetería Argentina"…)',
+        'Backlinks + Domain Analytics: perfil de autoridad por dominio',
+        'Pay-as-you-go (US$50 mínimo de depósito) — quema esperada US$20–30/mes'
+      ],
+      meta:[['Tipo','SERPs + keywords + backlinks'],['Cobertura','178 marcas GAF'],['Frecuencia','Semanal'],['Costo','~US$20–50/mes']]
+    },
+    'citas-ia':{
+      color:'test', eyebrow:'Para testear · Visibilidad en IA', title:'Citas en IA',
+      sub:'Tracker mensual de menciones a cada marca en Claude y Perplexity.',
+      image:'assets/03_anthropic_claude.png',
+      annotations:[{x:50, y:48, dy:26, text:'1 query/marca/mes'}],
+      bullets:[
+        '¿Claude menciona a esta franquicia cuando le preguntan por opciones del rubro?',
+        'Diversificación con Perplexity (modelo distinto, panel distinto, cita fuentes)',
+        'Feature diferencial vs. cualquier directorio o CRM tipo HubSpot'
+      ],
+      meta:[['Tipo','Menciones + ranking + fuentes'],['Modelos','Haiku · Sonnet · Sonar Pro'],['Frecuencia','Mensual'],['Costo','~US$10–40/mes']]
+    },
+    'trackeo':{
+      color:'test', eyebrow:'Para testear · Capa de tráfico', title:'Trackeo de tráfico',
+      sub:'Flujo vial en tiempo real como proxy de foot-traffic comercial.',
+      image:'assets/05_here_traffic.png',
+      annotations:[{x:48, y:48, dy:26, text:'HERE 250k tx/mes · TomTom 50k tiles/día gratis'}],
+      bullets:[
+        'Capa overlay opcional: el usuario activa "Tráfico" y se renderiza el flujo de la avenida',
+        'HERE Traffic vs. TomTom Traffic — sweet spot en free tier para el MVP',
+        'Cache de 15 min en CDN para no consumir transacciones por usuario'
+      ],
+      meta:[['Tipo','Flow tiles + incidentes'],['Frecuencia','Tiempo real (cache 15 min)'],['MVP','US$0 (free tiers)'],['Producción','~US$300/mes']]
+    },
+    'donweb':{
+      color:'core', eyebrow:'Infraestructura · Host argentino', title:'Don Web',
+      sub:'VPS donde corre todo el backend de FQC — base, orquestador y API.',
+      svg:SVG_DONWEB,
+      bullets:[
+        'VPS argentino — soberanía de datos y latencia baja para los usuarios locales',
+        'Reemplaza los JSON estáticos por una base viva, auto-actualizada por n8n',
+        'Stack: Docker + nginx + certbot + backups offsite (S3-compatible)'
+      ],
+      meta:[['Rol','Servidor backend'],['Componentes','Postgres + n8n + API'],['Soberanía','Datos en Argentina'],['Costo','A cotizar con FQC']]
+    },
+    'postgres':{
+      color:'core', eyebrow:'Infraestructura · Base auditable', title:'PostgreSQL + PostGIS',
+      sub:'Una sola base relacional + geoespacial, joineable y exportable.',
+      svg:SVG_POSTGRES,
+      bullets:[
+        'Una base única: POIs + radios censales + marcas GAF + reportes — todo joineable',
+        'PostGIS para sjoin con isócronas, polígonos de catchment y distancias reales',
+        'Auditable por SQL plano, exportable a parquet/CSV, versionable con migraciones'
+      ],
+      meta:[['Tipo','Relacional + geoespacial'],['Joins','POIs ⟕ censo ⟕ competencia'],['Backups','Diarios offsite'],['Costo','Gratis (open source)']]
+    },
+    'n8n':{
+      color:'core', eyebrow:'Infraestructura · Orquestador', title:'n8n',
+      sub:'Pipeline visual de scrapers, validadores y refresh — sin código.',
+      svg:SVG_N8N,
+      bullets:[
+        'Cada fuente es un workflow versionado: trigger → fetch → merge → upsert',
+        'Mensual rotatorio: validación Google Places + agentes Claude verificando POIs',
+        'Editable por el operador desde la UI — sin desplegar cada cambio'
+      ],
+      meta:[['Rol','Orquestador'],['Triggers','Cron · webhook · manual'],['Auditoría','Logs por ejecución'],['Costo','Gratis (self-hosted)']]
+    }
+  };
+
+  // ===== Modal handlers =====
+  const backdrop = document.getElementById('modal-backdrop');
+  const modalEl = document.getElementById('modal');
+  const closeBtn = document.getElementById('modal-close');
+  const mEyebrow = document.getElementById('m-eyebrow');
+  const mTitle = document.getElementById('m-title');
+  const mSub = document.getElementById('m-sub');
+  const mFigure = document.getElementById('m-figure');
+  const mBullets = document.getElementById('m-bullets');
+  const mMeta = document.getElementById('m-meta');
+
+  function openModal(key){
+    const data = SOURCES[key];
+    if(!data) return;
+    modalEl.classList.remove('prod','test','core');
+    modalEl.classList.add(data.color || 'prod');
+    mEyebrow.textContent = data.eyebrow || '';
+    mTitle.textContent = data.title || '';
+    mSub.textContent = data.sub || '';
+
+    mFigure.innerHTML = '';
+    mFigure.classList.remove('dark');
+    if(data.svg){
+      mFigure.classList.add('dark');
+      mFigure.innerHTML = data.svg;
+    } else if(data.image){
+      const img = document.createElement('img');
+      img.src = data.image;
+      img.alt = data.title;
+      mFigure.appendChild(img);
+      (data.annotations || []).forEach((a,i)=>{
+        const ann = document.createElement('div');
+        ann.className = 'modal-annot';
+        ann.textContent = a.text;
+        ann.style.left = a.x + '%';
+        ann.style.top = a.y + '%';
+        ann.style.setProperty('--ann-len', (a.dy || 24) + 'px');
+        ann.style.animationDelay = (0.45 + i*0.15) + 's';
+        mFigure.appendChild(ann);
+      });
+    }
+
+    mBullets.innerHTML = '';
+    (data.bullets || []).forEach((b,i)=>{
+      const li = document.createElement('li');
+      li.textContent = b;
+      li.style.animationDelay = (0.25 + i*0.15) + 's';
+      mBullets.appendChild(li);
+    });
+
+    mMeta.innerHTML = '';
+    (data.meta || []).forEach(([label,value])=>{
+      const row = document.createElement('div');
+      row.className = 'mm-row';
+      const lab = document.createElement('span'); lab.className = 'mm-label'; lab.textContent = label;
+      const val = document.createElement('span'); val.className = 'mm-value'; val.textContent = value;
+      row.append(lab, val);
+      mMeta.appendChild(row);
+    });
+
+    backdrop.classList.add('open');
+    backdrop.setAttribute('aria-hidden','false');
+  }
+  function closeModal(){
+    backdrop.classList.remove('open');
+    backdrop.setAttribute('aria-hidden','true');
+  }
+  document.querySelectorAll('[data-source]').forEach(el=>{
+    el.addEventListener('click', ()=> openModal(el.dataset.source));
+  });
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', (e)=>{ if(e.target === backdrop) closeModal(); });
+
+  // ----- Keyboard nav (PageDown/PageUp/Arrow) — disabled while modal open -----
+  document.addEventListener('keydown',(e)=>{
+    if(backdrop.classList.contains('open')){
+      if(e.key === 'Escape') closeModal();
+      return;
+    }
+    const slides = Array.from(document.querySelectorAll('section.slide'));
+    const current = slides.find(s=>{
+      const r = s.getBoundingClientRect();
+      return r.top >= -10 && r.top < window.innerHeight*0.5;
+    }) || slides[0];
+    const idx = slides.indexOf(current);
+    if(['PageDown','ArrowDown','ArrowRight',' '].includes(e.key)){
+      e.preventDefault();
+      const next = slides[Math.min(idx+1, slides.length-1)];
+      next.scrollIntoView({behavior:'smooth'});
+    } else if(['PageUp','ArrowUp','ArrowLeft'].includes(e.key)){
+      e.preventDefault();
+      const prev = slides[Math.max(idx-1, 0)];
+      prev.scrollIntoView({behavior:'smooth'});
+    } else if(e.key === 'Home'){
+      e.preventDefault();
+      slides[0].scrollIntoView({behavior:'smooth'});
+    } else if(e.key === 'End'){
+      e.preventDefault();
+      slides[slides.length-1].scrollIntoView({behavior:'smooth'});
+    }
+  });
+</script>
+</body>
+</html>

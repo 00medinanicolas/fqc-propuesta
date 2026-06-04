@@ -1,0 +1,13 @@
+# Working files (no van al repo público)
+assets/*.xlsx
+_*.txt
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
