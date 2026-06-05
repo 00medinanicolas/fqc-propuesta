@@ -220,12 +220,13 @@
   .blackbox.bb-analisis{border-color:rgba(244,201,93,.4);background:rgba(244,201,93,.04)}
   .blackbox.bb-core{border-color:rgba(95,216,168,.5);background:rgba(95,216,168,.05);border-style:solid}
   .bb-desc{
-    font-size:1.02rem;line-height:1.5;color:#fff;font-weight:600;
+    font-size:1rem;line-height:1.55;color:var(--text-1);font-weight:400;
     margin:10px 0 8px;letter-spacing:.005em;cursor:pointer;
     padding:14px 14px;border-radius:8px;
     background:rgba(139,92,246,.03);border:1px solid transparent;
     transition:background .2s ease,border-color .2s ease,transform .2s ease;
   }
+  .bb-desc strong{color:#fff;font-weight:700}
   .bb-desc:hover{
     background:rgba(139,92,246,.10);border-color:rgba(139,92,246,.32);
     transform:translateY(-1px);
@@ -919,7 +920,7 @@
         <!-- 1. INFRAESTRUCTURA (verde) -->
         <div class="blackbox bb-core" data-category="infraestructura">
           <span class="bb-label">Infraestructura</span>
-          <p class="bb-desc" role="button" tabindex="0" data-cat-open="infraestructura">Servidores en Argentina con bases de datos donde viven los locales con sus coordenadas, y los procesos automáticos que mantienen actualizada la información cada cierto tiempo.</p>
+          <p class="bb-desc" role="button" tabindex="0" data-cat-open="infraestructura"><strong>Servidores en Argentina</strong> con bases de datos donde viven los locales con sus coordenadas, y <strong>procesos automáticos</strong> que mantienen actualizada la información.</p>
           <div class="bb-rows">
             <div class="src-row" data-source="donweb">
               <div><div class="src-name">Don Web</div><div class="src-sub">Host del backend</div></div>
@@ -939,7 +940,7 @@
         <!-- 2. DATA (azul) -->
         <div class="blackbox bb-data" data-category="data">
           <span class="bb-label">Data</span>
-          <p class="bb-desc" role="button" tabindex="0" data-cat-open="data">OpenStreetMap aporta el grueso del universo, Overture complementa con micro-negocios y comercios poco mapeados, y Google valida cierres y confirma faltantes.</p>
+          <p class="bb-desc" role="button" tabindex="0" data-cat-open="data"><strong>OpenStreetMap</strong> aporta el grueso del universo, <strong>Overture</strong> complementa con micro-negocios y comercios poco mapeados, y <strong>Google</strong> valida cierres y confirma faltantes.</p>
           <div class="bb-rows">
             <div class="src-row src-row-multi">
               <div class="src-multi-item" data-source="osm">
@@ -966,7 +967,7 @@
         <!-- 3. ANÁLISIS SOCIO-ECONÓMICO (amarillo) -->
         <div class="blackbox bb-analisis" data-category="analisis">
           <span class="bb-label">Análisis socio-económico</span>
-          <p class="bb-desc" role="button" tabindex="0" data-cat-open="analisis">Herramientas para entender una zona antes de abrir un local. El sistema combina la base con datos de población y economía del INDEC y genera reportes y análisis comparativos entre puntos.</p>
+          <p class="bb-desc" role="button" tabindex="0" data-cat-open="analisis">Herramientas para <strong>entender una zona antes de abrir</strong>. Combinan la base con datos de población y economía del <strong>INDEC</strong> y generan <strong>reportes y análisis comparativos</strong> entre puntos.</p>
           <div class="bb-rows">
             <div class="src-row" data-source="reporte">
               <div><div class="src-name">Reporte de zona</div><div class="src-sub">Vista completa de un mercado</div></div>
@@ -976,9 +977,9 @@
               <div><div class="src-name">Analizar punto</div><div class="src-sub">Radio sobre una coordenada</div></div>
               <div class="src-pill">interactivo</div>
             </div>
-            <div class="src-row src-row-soon" data-source="analisis-comparativo">
+            <div class="src-row" data-source="analisis-comparativo">
               <div><div class="src-name">Análisis comparativo</div><div class="src-sub">Comparación entre zonas</div></div>
-              <div class="src-pill">próximamente</div>
+              <div class="src-pill">interactivo</div>
             </div>
           </div>
         </div>
@@ -1560,17 +1561,18 @@
       ]
     },
     'analisis-comparativo':{
-      color:'analisis', eyebrow:'Análisis · Próximamente', title:'Análisis comparativo',
+      color:'analisis', eyebrow:'Análisis · Comparativo', title:'Análisis comparativo',
       sub:'Comparación lado a lado entre dos o más zonas candidatas para decidir cuál tiene mejor potencial.',
+      video:'assets/analisis_comparativo.mp4',
       narration:[
-        'Permite seleccionar varias zonas y ver sus indicadores enfrentados.',
-        'Población, poder adquisitivo, densidad de comercios afines y oferta competitiva.',
-        'En desarrollo — disponible próximamente en el roadmap del producto.'
+        'Seleccionás varias zonas y se enfrentan sus indicadores en una sola tabla.',
+        'Misma demografía, tejido comercial y cálculo de prospectos que el reporte individual.',
+        'Editás supuestos del funnel y se recalcula en vivo para todas las zonas.'
       ],
       meta:[
-        ['Estado','En desarrollo'],
-        ['Entrada','Zonas seleccionadas'],
-        ['Salida','Tabla comparativa de indicadores']
+        ['Tipo','Comparativo multi-zona'],
+        ['Entrada','Hasta 4 zonas seleccionadas'],
+        ['Salida','Tabla comparativa + cálculo de prospectos']
       ]
     },
     'donweb-pricing':{
@@ -1650,7 +1652,7 @@
       rows:[
         { source:'reporte',              name:'Reporte de zona',      sub:'Vista completa de un mercado' },
         { source:'analizar-punto',       name:'Analizar punto',       sub:'Radio sobre una coordenada' },
-        { source:'analisis-comparativo', name:'Análisis comparativo', sub:'Comparación entre zonas', soon:true }
+        { source:'analisis-comparativo', name:'Análisis comparativo', sub:'Comparación entre zonas' }
       ]
     }
   };
