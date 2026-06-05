@@ -220,10 +220,30 @@
   .blackbox.bb-analisis{border-color:rgba(244,201,93,.4);background:rgba(244,201,93,.04)}
   .blackbox.bb-core{border-color:rgba(95,216,168,.5);background:rgba(95,216,168,.05);border-style:solid}
   .bb-desc{
-    font-size:.78rem;line-height:1.55;color:var(--text-1);font-weight:300;
-    margin:6px 0 14px;letter-spacing:.005em;
+    font-size:1.02rem;line-height:1.5;color:#fff;font-weight:600;
+    margin:10px 0 8px;letter-spacing:.005em;cursor:pointer;
+    padding:14px 14px;border-radius:8px;
+    background:rgba(139,92,246,.03);border:1px solid transparent;
+    transition:background .2s ease,border-color .2s ease,transform .2s ease;
   }
-  .bb-rows{display:flex;flex-direction:column}
+  .bb-desc:hover{
+    background:rgba(139,92,246,.10);border-color:rgba(139,92,246,.32);
+    transform:translateY(-1px);
+  }
+  .bb-desc:active{transform:translateY(0)}
+  .bb-desc::after{
+    content:'Ver herramientas →';display:block;
+    margin-top:10px;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--brand-bright);font-weight:600;
+  }
+  .blackbox.bb-data .bb-desc:hover{background:rgba(116,172,223,.10);border-color:rgba(116,172,223,.35)}
+  .blackbox.bb-analisis .bb-desc:hover{background:rgba(244,201,93,.08);border-color:rgba(244,201,93,.32)}
+  .blackbox.bb-core .bb-desc:hover{background:rgba(95,216,168,.08);border-color:rgba(95,216,168,.32)}
+  .blackbox.bb-data .bb-desc::after{color:#74acdf}
+  .blackbox.bb-analisis .bb-desc::after{color:var(--accent)}
+  .blackbox.bb-core .bb-desc::after{color:var(--ok)}
+  /* Las filas viven en el modal de categoría — en la página solo se ve la descripción. */
+  .bb-rows{display:none}
   .bb-label{
     position:absolute;top:-9px;left:14px;padding:2px 8px;font-size:.62rem;letter-spacing:.28em;
     text-transform:uppercase;font-weight:700;background:var(--bg-0);
@@ -403,6 +423,49 @@
   .modal-meta .mm-row{display:flex;justify-content:space-between;gap:14px;align-items:baseline}
   .modal-meta .mm-label{font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--text-2);font-weight:600;flex:0 0 auto}
   .modal-meta .mm-value{font-size:.82rem;color:var(--text-1);text-align:right;font-family:'JetBrains Mono',monospace;font-weight:400}
+
+  /* Modal en modo categoría: lista de herramientas clickeables */
+  .modal-rows{display:flex;flex-direction:column;gap:10px;margin-top:8px;opacity:0;animation:fadeUp .32s ease .12s forwards}
+  .modal-row-item{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    padding:16px 18px;border-radius:10px;cursor:pointer;
+    background:rgba(15,12,28,.7);border:1px solid var(--line);
+    transition:background .2s ease,border-color .2s ease,transform .15s ease;
+    text-align:left;font-family:inherit;color:inherit;width:100%;
+  }
+  .modal-row-item:hover{transform:translateY(-1px)}
+  .modal-row-item .mri-name{font-size:1.02rem;font-weight:700;color:#fff;letter-spacing:.005em}
+  .modal-row-item .mri-sub{font-size:.78rem;color:var(--text-2);margin-top:3px;font-weight:400}
+  .modal-row-item .mri-arrow{
+    font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:var(--brand-bright);
+    white-space:nowrap;
+  }
+  .modal.data .modal-row-item:hover{background:rgba(116,172,223,.10);border-color:rgba(116,172,223,.4)}
+  .modal.data .modal-row-item .mri-arrow{color:#74acdf}
+  .modal.analisis .modal-row-item:hover{background:rgba(244,201,93,.10);border-color:rgba(244,201,93,.4)}
+  .modal.analisis .modal-row-item .mri-arrow{color:var(--accent)}
+  .modal.core .modal-row-item:hover{background:rgba(95,216,168,.08);border-color:rgba(95,216,168,.4)}
+  .modal.core .modal-row-item .mri-arrow{color:var(--ok)}
+  .modal-row-item.is-soon{opacity:.55;cursor:not-allowed}
+  .modal-row-item.is-soon:hover{transform:none;background:rgba(15,12,28,.7);border-color:var(--line)}
+  /* Fila combinada (OSM + Overture) dentro del modal */
+  .modal-row-pair{display:flex;align-items:stretch;gap:0;padding:0;background:transparent;border:none;cursor:default}
+  .modal-row-pair:hover{transform:none;background:transparent;border:none}
+  .modal-row-half{
+    flex:1;padding:16px 18px;border-radius:10px;cursor:pointer;
+    background:rgba(15,12,28,.7);border:1px solid var(--line);
+    transition:background .2s ease,border-color .2s ease,transform .15s ease;
+    display:flex;flex-direction:column;justify-content:center;text-align:left;
+    font-family:inherit;color:inherit;
+  }
+  .modal-row-half:hover{transform:translateY(-1px)}
+  .modal.data .modal-row-half:hover{background:rgba(116,172,223,.10);border-color:rgba(116,172,223,.4)}
+  .modal-row-half .mri-name{font-size:.95rem;font-weight:700;color:#fff}
+  .modal-row-half .mri-sub{font-size:.74rem;color:var(--text-2);margin-top:3px}
+  .modal-row-plus{
+    align-self:center;font-size:1rem;font-weight:700;color:var(--text-2);
+    padding:0 12px;letter-spacing:.05em;opacity:.7;
+  }
 
   /* ============== SLIDE 5: COSTO DE TRABAJO ============== */
   #s5{background:linear-gradient(180deg,#0c0a1a 0%,var(--bg-0) 100%);padding:3vh 6vw}
@@ -702,7 +765,7 @@
     <div class="bg-radial"></div>
     <div class="bg-grid"></div>
 
-    <div class="slide-counter"><b>01</b> / 06</div>
+    <div class="slide-counter"><b>01</b> / 07</div>
 
     <div class="landing-inner">
       <div class="logo-wrap">
@@ -742,7 +805,7 @@
   <section class="slide" id="s2" data-idx="2">
     <div class="bg-radial"></div>
     <div class="bg-grid"></div>
-    <div class="slide-counter"><b>02</b> / 06</div>
+    <div class="slide-counter"><b>02</b> / 07</div>
 
     <div class="s2-inner">
       <div class="eyebrow no-line">Propuesta</div>
@@ -780,7 +843,7 @@
   <section class="slide" id="s3" data-idx="3">
     <div class="bg-radial"></div>
     <div class="bg-grid"></div>
-    <div class="slide-counter"><b>03</b> / 06</div>
+    <div class="slide-counter"><b>03</b> / 07</div>
 
     <div class="s3-inner">
       <div class="s3-header">
@@ -841,7 +904,7 @@
   <section class="slide" id="s4" data-idx="4">
     <div class="bg-radial"></div>
     <div class="bg-grid"></div>
-    <div class="slide-counter"><b>04</b> / 06</div>
+    <div class="slide-counter"><b>04</b> / 07</div>
 
     <div class="s4-inner">
       <div class="s4-header">
@@ -854,9 +917,9 @@
       <div class="s4-flow">
 
         <!-- 1. INFRAESTRUCTURA (verde) -->
-        <div class="blackbox bb-core">
+        <div class="blackbox bb-core" data-category="infraestructura">
           <span class="bb-label">Infraestructura</span>
-          <p class="bb-desc">Servidores en Argentina con bases de datos donde viven los locales con sus coordenadas, y los procesos automáticos que mantienen actualizada la información cada cierto tiempo.</p>
+          <p class="bb-desc" role="button" tabindex="0" data-cat-open="infraestructura">Servidores en Argentina con bases de datos donde viven los locales con sus coordenadas, y los procesos automáticos que mantienen actualizada la información cada cierto tiempo.</p>
           <div class="bb-rows">
             <div class="src-row" data-source="donweb">
               <div><div class="src-name">Don Web</div><div class="src-sub">Host del backend</div></div>
@@ -874,17 +937,20 @@
         </div>
 
         <!-- 2. DATA (azul) -->
-        <div class="blackbox bb-data">
+        <div class="blackbox bb-data" data-category="data">
           <span class="bb-label">Data</span>
-          <p class="bb-desc">OpenStreetMap aporta el grueso del universo, Overture complementa con micro-negocios y comercios poco mapeados, y Google valida cierres y confirma faltantes.</p>
+          <p class="bb-desc" role="button" tabindex="0" data-cat-open="data">OpenStreetMap aporta el grueso del universo, Overture complementa con micro-negocios y comercios poco mapeados, y Google valida cierres y confirma faltantes.</p>
           <div class="bb-rows">
-            <div class="src-row" data-source="osm">
-              <div><div class="src-name">OpenStreetMap</div><div class="src-sub">Catálogo abierto</div></div>
-              <div class="src-pill">base</div>
-            </div>
-            <div class="src-row" data-source="overture">
-              <div><div class="src-name">Overture Maps</div><div class="src-sub">Consorcio global</div></div>
-              <div class="src-pill">cobertura</div>
+            <div class="src-row src-row-multi">
+              <div class="src-multi-item" data-source="osm">
+                <div class="src-name">OpenStreetMap</div>
+                <div class="src-sub">Catálogo abierto</div>
+              </div>
+              <span class="src-divider">+</span>
+              <div class="src-multi-item" data-source="overture">
+                <div class="src-name">Overture Maps</div>
+                <div class="src-sub">Datos de META y Microsoft</div>
+              </div>
             </div>
             <div class="src-row" data-source="gplaces">
               <div><div class="src-name">Google Places API</div><div class="src-sub">Valida vigencia</div></div>
@@ -898,9 +964,9 @@
         </div>
 
         <!-- 3. ANÁLISIS SOCIO-ECONÓMICO (amarillo) -->
-        <div class="blackbox bb-analisis">
+        <div class="blackbox bb-analisis" data-category="analisis">
           <span class="bb-label">Análisis socio-económico</span>
-          <p class="bb-desc">Herramientas para entender una zona antes de abrir un local. El sistema combina la base con datos de población y economía del INDEC y genera reportes y análisis comparativos entre puntos.</p>
+          <p class="bb-desc" role="button" tabindex="0" data-cat-open="analisis">Herramientas para entender una zona antes de abrir un local. El sistema combina la base con datos de población y economía del INDEC y genera reportes y análisis comparativos entre puntos.</p>
           <div class="bb-rows">
             <div class="src-row" data-source="reporte">
               <div><div class="src-name">Reporte de zona</div><div class="src-sub">Vista completa de un mercado</div></div>
@@ -919,7 +985,7 @@
 
       </div>
 
-      <div class="s4-hint">Tocá cualquier elemento para ver el detalle</div>
+      <div class="s4-hint">Tocá cualquier descripción para ver las herramientas</div>
     </div>
 
     <div class="corner-brand">
@@ -932,7 +998,7 @@
   <section class="slide" id="s5" data-idx="5">
     <div class="bg-radial"></div>
     <div class="bg-grid"></div>
-    <div class="slide-counter"><b>05</b> / 06</div>
+    <div class="slide-counter"><b>05</b> / 07</div>
 
     <div class="s5-inner">
       <div class="s5-header">
@@ -1055,7 +1121,7 @@
   <section class="slide" id="s6" data-idx="6">
     <div class="bg-radial"></div>
     <div class="bg-grid"></div>
-    <div class="slide-counter"><b>06</b> / 06</div>
+    <div class="slide-counter"><b>06</b> / 07</div>
 
     <div class="s6-inner">
       <div class="s6-header">
@@ -1094,14 +1160,50 @@
         </div>
       </div>
 
-      <div class="s6-footer">
-        Cada herramienta entra al stack <strong>solo después</strong> de evaluarse en la Semana 2 del Mes 1 y aprobarse en la Semana 3 del Mes 2.
-      </div>
     </div>
 
     <div class="corner-brand">
       <svg viewBox="0 0 25 36" xmlns="http://www.w3.org/2000/svg"><path d="M0.715 10.934L18.797 0.276L24.824 3.828L6.743 14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M6.742 21.589L18.796 14.485L24.824 18.037L12.769 25.143L6.742 21.589Z" fill="#8b5cf6"/><path d="M0.715 10.934V25.143L6.743 28.695V14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M12.769 25.143V32.247L6.742 28.695V21.59L12.769 25.143Z" fill="#8b5cf6"/><path d="M12.769 32.247L18.796 28.695L24.824 32.247L18.796 35.799L12.769 32.247Z" fill="#8b5cf6"/></svg>
       <span class="corner-text">FQC · Herramientas</span>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 7 — CIERRE: MUCHAS GRACIAS ============== -->
+  <section class="slide" id="s7" data-idx="7">
+    <div class="bg-radial"></div>
+    <div class="bg-grid"></div>
+
+    <div class="slide-counter"><b>07</b> / 07</div>
+
+    <div class="landing-inner">
+      <div class="logo-wrap">
+        <svg class="logo-mark" viewBox="0 0 25 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M0.715 10.934L18.797 0.276L24.824 3.828L6.743 14.486L0.715 10.934Z" fill="#8b5cf6"/>
+          <path d="M6.742 21.589L18.796 14.485L24.824 18.037L12.769 25.143L6.742 21.589Z" fill="#8b5cf6"/>
+          <path d="M0.715 10.934V25.143L6.743 28.695V14.486L0.715 10.934Z" fill="#8b5cf6"/>
+          <path d="M12.769 25.143V32.247L6.742 28.695V21.59L12.769 25.143Z" fill="#8b5cf6"/>
+          <path d="M12.769 32.247L18.796 28.695L24.824 32.247L18.796 35.799L12.769 32.247Z" fill="#8b5cf6"/>
+        </svg>
+        <img class="logo-img" alt="Franquicias que Crecen" id="logo-img-end"/>
+      </div>
+
+      <h1 class="landing-title">Muchas gracias</h1>
+      <p class="landing-sub">Nicolás Medina</p>
+
+      <div class="landing-meta">
+        <em>Junio 2026</em>
+      </div>
+    </div>
+
+    <div class="corner-brand">
+      <svg viewBox="0 0 25 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M0.715 10.934L18.797 0.276L24.824 3.828L6.743 14.486L0.715 10.934Z" fill="#8b5cf6"/>
+        <path d="M6.742 21.589L18.796 14.485L24.824 18.037L12.769 25.143L6.742 21.589Z" fill="#8b5cf6"/>
+        <path d="M0.715 10.934V25.143L6.743 28.695V14.486L0.715 10.934Z" fill="#8b5cf6"/>
+        <path d="M12.769 25.143V32.247L6.742 28.695V21.59L12.769 25.143Z" fill="#8b5cf6"/>
+        <path d="M12.769 32.247L18.796 28.695L24.824 32.247L18.796 35.799L12.769 32.247Z" fill="#8b5cf6"/>
+      </svg>
+      <span class="corner-text">FQC · Cierre</span>
     </div>
   </section>
 
@@ -1124,6 +1226,8 @@
         </div>
       </figure>
       <div class="modal-meta" id="m-meta"></div>
+      <!-- Modal en modo categoría: lista de herramientas clickeables -->
+      <div class="modal-rows" id="m-rows" hidden></div>
     </div>
   </div>
 </div>
@@ -1133,10 +1237,10 @@
   // Placeholder: the PNG bytes are injected from the file when serving locally.
   // Fallback to assets/fqc-logo.png if data-URI unavailable.
   (function injectLogo(){
-    const img = document.getElementById('logo-img');
-    if(!img) return;
-    img.src = 'assets/fqc-logo.png';
-    img.onerror = ()=>{ img.style.display='none'; };
+    document.querySelectorAll('img.logo-img').forEach(img=>{
+      img.src = 'assets/fqc-logo.png';
+      img.onerror = ()=>{ img.style.display='none'; };
+    });
   })();
 
   // ----- Intersection Observer for animation triggers -----
@@ -1508,6 +1612,49 @@
     }
   };
 
+  // ===== Categorías de la caja negra (slide 4) =====
+  // El usuario entra a la página viendo solo la descripción de cada card; al tocarla
+  // se abre un modal con las 3 (sub-)herramientas, y desde ahí cada una abre su
+  // propio modal de detalle (los de SOURCES).
+  const CATEGORIES = {
+    'infraestructura':{
+      color:'core',
+      eyebrow:'La caja negra · Infraestructura',
+      title:'Infraestructura',
+      sub:'Servidores en Argentina con bases de datos donde viven los locales con sus coordenadas, y los procesos automáticos que mantienen actualizada la información cada cierto tiempo.',
+      rows:[
+        { source:'donweb',  name:'Don Web',              sub:'Host del backend' },
+        { source:'postgres',name:'PostgreSQL + PostGIS', sub:'Base única auditable' },
+        { source:'n8n',     name:'n8n',                  sub:'Orquestador de flujos' }
+      ]
+    },
+    'data':{
+      color:'data',
+      eyebrow:'La caja negra · Data',
+      title:'Data',
+      sub:'OpenStreetMap aporta el grueso del universo, Overture complementa con micro-negocios y comercios poco mapeados, y Google valida cierres y confirma faltantes.',
+      rows:[
+        { pair:[
+          { source:'osm',      name:'OpenStreetMap', sub:'Catálogo abierto' },
+          { source:'overture', name:'Overture Maps', sub:'Datos de META y Microsoft' }
+        ]},
+        { source:'gplaces',           name:'Google Places API',   sub:'Valida vigencia' },
+        { source:'marcas-sucursales', name:'Marcas y sucursales', sub:'Padrón sectorial · Sitios oficiales · Mapping FQC' }
+      ]
+    },
+    'analisis':{
+      color:'analisis',
+      eyebrow:'La caja negra · Análisis socio-económico',
+      title:'Análisis socio-económico',
+      sub:'Herramientas para entender una zona antes de abrir un local. El sistema combina la base con datos de población y economía del INDEC y genera reportes y análisis comparativos entre puntos.',
+      rows:[
+        { source:'reporte',              name:'Reporte de zona',      sub:'Vista completa de un mercado' },
+        { source:'analizar-punto',       name:'Analizar punto',       sub:'Radio sobre una coordenada' },
+        { source:'analisis-comparativo', name:'Análisis comparativo', sub:'Comparación entre zonas', soon:true }
+      ]
+    }
+  };
+
   // ===== Modal handlers =====
   const backdrop = document.getElementById('modal-backdrop');
   const modalEl = document.getElementById('modal');
@@ -1520,6 +1667,7 @@
   const mNarrStack = document.getElementById('m-narr-stack');
   const mNarrDots = document.getElementById('m-narr-dots');
   const mMeta = document.getElementById('m-meta');
+  const mRows = document.getElementById('m-rows');
 
   let narrTimer = null;
   function startNarration(){
@@ -1608,6 +1756,9 @@
   function openModal(key){
     const data = SOURCES[key];
     if(!data) return;
+    // Salir de modo categoría si veníamos de ahí
+    mRows.hidden = true;
+    mFigure.style.display = '';
     modalEl.classList.remove('prod','data','test','analisis','core');
     modalEl.classList.add(data.color || 'data');
     mEyebrow.textContent = data.eyebrow || '';
@@ -1653,6 +1804,79 @@
     backdrop.classList.remove('open');
     backdrop.setAttribute('aria-hidden','true');
   }
+
+  // Modal en modo categoría: muestra la lista de herramientas de la card; cada
+  // ítem dispara openModal() del source correspondiente (modal-en-modal lógico
+  // — visualmente reemplaza el contenido del mismo backdrop para evitar pilas).
+  function openCategoryModal(catKey){
+    const cat = CATEGORIES[catKey];
+    if(!cat) return;
+    stopNarration();
+    modalEl.classList.remove('prod','data','test','analisis','core');
+    modalEl.classList.add(cat.color || 'data');
+    mEyebrow.textContent = cat.eyebrow || '';
+    mTitle.textContent = cat.title || '';
+    mSub.textContent = cat.sub || '';
+
+    // Ocultar figura/meta del modo source; mostrar lista de filas
+    mFigure.style.display = 'none';
+    mMeta.style.display = 'none';
+    mRows.hidden = false;
+    mRows.innerHTML = '';
+    cat.rows.forEach(r=>{
+      if(r.pair){
+        // Fila combinada (OSM + Overture): dos botones lado a lado
+        const wrap = document.createElement('div');
+        wrap.className = 'modal-row-item modal-row-pair';
+        r.pair.forEach((half,i)=>{
+          if(i > 0){
+            const plus = document.createElement('span');
+            plus.className = 'modal-row-plus';
+            plus.textContent = '+';
+            wrap.appendChild(plus);
+          }
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'modal-row-half';
+          btn.dataset.source = half.source;
+          btn.innerHTML = `<div class="mri-name">${half.name}</div><div class="mri-sub">${half.sub}</div>`;
+          btn.addEventListener('click', ()=> openModal(half.source));
+          wrap.appendChild(btn);
+        });
+        mRows.appendChild(wrap);
+      } else {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'modal-row-item' + (r.soon ? ' is-soon' : '');
+        btn.innerHTML = `<div><div class="mri-name">${r.name}</div><div class="mri-sub">${r.sub}</div></div><span class="mri-arrow">${r.soon ? 'Próximamente' : 'Ver detalle →'}</span>`;
+        if(!r.soon){
+          btn.dataset.source = r.source;
+          btn.addEventListener('click', ()=> openModal(r.source));
+        } else {
+          btn.disabled = true;
+        }
+        mRows.appendChild(btn);
+      }
+    });
+
+    backdrop.classList.add('open');
+    backdrop.setAttribute('aria-hidden','false');
+  }
+
+  // Click en la descripción de una card del slide 4 → abre modal de categoría
+  document.querySelectorAll('[data-cat-open]').forEach(el=>{
+    el.addEventListener('click', ()=> openCategoryModal(el.dataset.catOpen));
+    el.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        openCategoryModal(el.dataset.catOpen);
+      }
+    });
+  });
+
+  // Mantener los handlers para los elementos con data-source que quedaron en la
+  // página (tool-cards del slide 6, etc.) — los de slide 4 quedan dentro del
+  // modal de categoría y se bindean al renderizarse.
   document.querySelectorAll('[data-source]').forEach(el=>{
     el.addEventListener('click', ()=> openModal(el.dataset.source));
   });
