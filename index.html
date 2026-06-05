@@ -216,15 +216,20 @@
     border:1px dashed var(--line-2);border-radius:12px;padding:18px 18px 14px;
     background:rgba(10,10,18,.5);position:relative;
   }
-  .blackbox.bb-prod{border-color:rgba(139,92,246,.45);background:rgba(82,41,132,.08)}
-  .blackbox.bb-test{border-color:rgba(244,201,93,.4);background:rgba(244,201,93,.04)}
+  .blackbox.bb-data{border-color:rgba(116,172,223,.5);background:rgba(116,172,223,.06)}
+  .blackbox.bb-analisis{border-color:rgba(244,201,93,.4);background:rgba(244,201,93,.04)}
   .blackbox.bb-core{border-color:rgba(95,216,168,.5);background:rgba(95,216,168,.05);border-style:solid}
+  .bb-desc{
+    font-size:.78rem;line-height:1.55;color:var(--text-1);font-weight:300;
+    margin:6px 0 14px;letter-spacing:.005em;
+  }
+  .bb-rows{display:flex;flex-direction:column}
   .bb-label{
     position:absolute;top:-9px;left:14px;padding:2px 8px;font-size:.62rem;letter-spacing:.28em;
     text-transform:uppercase;font-weight:700;background:var(--bg-0);
   }
-  .blackbox.bb-prod .bb-label{color:var(--brand-bright)}
-  .blackbox.bb-test .bb-label{color:var(--accent)}
+  .blackbox.bb-data .bb-label{color:#74acdf}
+  .blackbox.bb-analisis .bb-label{color:var(--accent)}
   .blackbox.bb-core .bb-label{color:var(--ok)}
 
   .src-row{display:flex;align-items:center;justify-content:space-between;padding:9px 4px;border-bottom:1px solid var(--line);gap:10px}
@@ -236,15 +241,34 @@
     background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.22);
     padding:3px 8px;border-radius:3px;white-space:nowrap;
   }
-  .bb-test .src-pill{background:rgba(244,201,93,.08);border-color:rgba(244,201,93,.28);color:var(--accent)}
+  .bb-data .src-pill{background:rgba(116,172,223,.08);border-color:rgba(116,172,223,.32);color:#74acdf}
+  .bb-analisis .src-pill{background:rgba(244,201,93,.08);border-color:rgba(244,201,93,.28);color:var(--accent)}
   .bb-core .src-pill{background:rgba(95,216,168,.08);border-color:rgba(95,216,168,.28);color:var(--ok)}
 
   /* Interactive source rows */
-  .src-row{cursor:pointer;transition:background .2s,transform .15s;border-radius:6px;margin:0 -8px;padding:9px 12px}
-  .src-row:hover{background:rgba(139,92,246,.10)}
-  .bb-test .src-row:hover{background:rgba(244,201,93,.08)}
-  .bb-core .src-row:hover{background:rgba(95,216,168,.07)}
-  .src-row:active{transform:scale(.99)}
+  .src-row{cursor:pointer;transition:background .2s,transform .25s ease,box-shadow .25s ease;border-radius:6px;margin:0 -8px;padding:9px 12px}
+  .src-row:hover{background:rgba(116,172,223,.10);transform:scale(1.025);box-shadow:0 6px 18px -10px rgba(116,172,223,.45)}
+  .bb-data .src-row:hover{background:rgba(116,172,223,.10);box-shadow:0 6px 18px -10px rgba(116,172,223,.45)}
+  .bb-analisis .src-row:hover{background:rgba(244,201,93,.08);box-shadow:0 6px 18px -10px rgba(244,201,93,.35)}
+  .bb-core .src-row:hover{background:rgba(95,216,168,.07);box-shadow:0 6px 18px -10px rgba(95,216,168,.4)}
+  .src-row:active{transform:scale(.985)}
+  /* Fila compuesta: 2 items side-by-side con divider */
+  .src-row-multi{display:flex;align-items:stretch;gap:0;padding:0;cursor:default}
+  .src-row-multi:hover{background:transparent}
+  .src-multi-item{
+    flex:1;padding:9px 14px;cursor:pointer;border-radius:6px;
+    transition:background .2s,transform .15s;display:flex;flex-direction:column;justify-content:center;
+  }
+  .src-multi-item:hover{background:rgba(116,172,223,.10)}
+  .src-multi-item:active{transform:scale(.99)}
+  .src-divider{
+    align-self:center;font-size:.86rem;font-weight:600;color:var(--text-2);
+    padding:0 6px;letter-spacing:.05em;opacity:.55;
+  }
+  /* Fila "próximamente" — apagada visualmente */
+  .src-row-soon{opacity:.55;cursor:not-allowed}
+  .src-row-soon:hover{background:transparent;cursor:not-allowed}
+  .src-row-soon .src-pill{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.18);color:var(--text-2)}
 
   .s4-hint{
     margin-top:24px;text-align:center;font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--text-2);
@@ -280,7 +304,8 @@
   .modal::-webkit-scrollbar{width:6px}
   .modal::-webkit-scrollbar-thumb{background:var(--brand);border-radius:3px}
   .modal.prod{border-color:rgba(139,92,246,.55);box-shadow:0 0 0 1px rgba(139,92,246,.25),0 30px 80px rgba(0,0,0,.55)}
-  .modal.test{border-color:rgba(244,201,93,.55);box-shadow:0 0 0 1px rgba(244,201,93,.25),0 30px 80px rgba(0,0,0,.55)}
+  .modal.data{border-color:rgba(116,172,223,.55);box-shadow:0 0 0 1px rgba(116,172,223,.25),0 30px 80px rgba(0,0,0,.55)}
+  .modal.test,.modal.analisis{border-color:rgba(244,201,93,.55);box-shadow:0 0 0 1px rgba(244,201,93,.25),0 30px 80px rgba(0,0,0,.55)}
   .modal.core{border-color:rgba(95,216,168,.55);box-shadow:0 0 0 1px rgba(95,216,168,.25),0 30px 80px rgba(0,0,0,.55)}
 
   .modal-close{
@@ -297,7 +322,8 @@
     font-size:.66rem;letter-spacing:.32em;text-transform:uppercase;
     color:var(--brand-bright);font-weight:600;margin-bottom:.7rem;display:inline-block;
   }
-  .modal.test .modal-eyebrow{color:var(--accent)}
+  .modal.data .modal-eyebrow{color:#74acdf}
+  .modal.test .modal-eyebrow,.modal.analisis .modal-eyebrow{color:var(--accent)}
   .modal.core .modal-eyebrow{color:var(--ok)}
   .modal-title{font-size:1.85rem;font-weight:800;color:#fff;letter-spacing:-.018em;line-height:1.06;margin-bottom:.55rem}
   .modal-sub{font-size:.96rem;color:var(--text-1);font-weight:300;line-height:1.5}
@@ -310,6 +336,15 @@
   }
   .modal-figure.dark{background:#06060e}
   .modal-figure img{display:block;width:100%;height:auto;max-height:340px;object-fit:contain;background:#fff}
+  .modal-image-link{display:block;position:relative;cursor:zoom-in;transition:filter .25s ease}
+  .modal-image-link::after{
+    content:'↗ Abrir fuente oficial';position:absolute;top:10px;right:10px;
+    padding:5px 10px;border-radius:3px;font-family:'Inter',sans-serif;font-size:.66rem;letter-spacing:.18em;
+    text-transform:uppercase;font-weight:600;color:#fff;background:rgba(15,12,28,.78);
+    border:1px solid rgba(139,92,246,.55);opacity:0;transition:opacity .25s ease;pointer-events:none;
+  }
+  .modal-image-link:hover{filter:brightness(1.04)}
+  .modal-image-link:hover::after{opacity:1}
   .modal-figure video{display:block;width:100%;height:auto;max-height:340px;object-fit:cover;background:#000}
   .modal-figure svg.svg-illu{display:block;width:100%;height:auto}
   @keyframes figFade{to{opacity:1}}
@@ -323,7 +358,8 @@
     opacity:0;animation:annotIn .4s ease forwards;
     box-shadow:0 4px 14px rgba(0,0,0,.4);
   }
-  .modal.test .modal-annot{background:var(--accent);color:#1a1408}
+  .modal.data .modal-annot{background:#74acdf;color:#06121f}
+  .modal.test .modal-annot,.modal.analisis .modal-annot{background:var(--accent);color:#1a1408}
   .modal.core .modal-annot{background:var(--ok);color:#06231a}
   .modal-annot::before{
     content:'';position:absolute;width:1.5px;background:currentColor;opacity:.85;
@@ -355,7 +391,8 @@
     transition:background .25s,width .25s;
   }
   .narr-dots span.active{background:var(--brand-bright);width:20px;border-radius:3px}
-  .modal.test .narr-dots span.active{background:var(--accent)}
+  .modal.data .narr-dots span.active{background:#74acdf}
+  .modal.test .narr-dots span.active,.modal.analisis .narr-dots span.active{background:var(--accent)}
   .modal.core .narr-dots span.active{background:var(--ok)}
 
   .modal-meta{
@@ -385,10 +422,9 @@
   }
   .cost-table{width:100%;border-collapse:collapse;font-size:.88rem;table-layout:fixed}
   .cost-table col.c-item{width:22%}
-  .cost-table col.c-desc{width:39%}
-  .cost-table col.c-plazo{width:11%}
-  .cost-table col.c-horas{width:10%}
-  .cost-table col.c-usd{width:18%}
+  .cost-table col.c-desc{width:45%}
+  .cost-table col.c-plazo{width:13%}
+  .cost-table col.c-usd{width:20%}
   .cost-table thead th{
     font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--text-2);
     font-weight:600;text-align:left;padding:10px 22px;background:rgba(10,10,18,.55);
@@ -412,8 +448,20 @@
   }
   .ct-desc{color:var(--text-1);font-weight:300;line-height:1.45}
   .ct-plazo{color:var(--text-2);font-family:'JetBrains Mono',monospace;font-size:.76rem;letter-spacing:.02em}
-  .ct-horas{color:var(--text-1);font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:500;text-align:right;letter-spacing:.02em}
   .ct-usd{color:#fff;font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:600;text-align:right;letter-spacing:.02em}
+  /* Sub total entre items */
+  .cost-table tr.ct-subtotal td{
+    background:rgba(82,41,132,.18);
+    border-top:1px dashed rgba(139,92,246,.4);
+    border-bottom:1px solid var(--line-2);
+    padding:7px 22px;vertical-align:middle;
+  }
+  .cost-table tr.ct-subtotal .ct-subtotal-label{
+    text-align:right;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--brand-bright);font-weight:600;
+  }
+  .cost-table tr.ct-subtotal .ct-usd{color:var(--brand-bright);font-size:.94rem}
+  /* Total */
   .cost-table tr.ct-total td{
     background:linear-gradient(90deg,rgba(82,41,132,.42) 0%,rgba(139,92,246,.18) 100%);
     border-top:1px solid var(--brand-bright);padding:12px 22px;vertical-align:middle;
@@ -425,7 +473,6 @@
     padding-top:12px;
   }
   .cost-table tr.ct-total .ct-item strong{letter-spacing:.24em;font-size:.72rem}
-  .cost-table tr.ct-total .ct-desc{font-size:.78rem;color:var(--text-1);font-style:italic}
   .cost-table tr.ct-total .ct-usd{color:var(--brand-bright);font-size:1.04rem}
   /* Asteriscos como footer dentro de la card (no compiten por espacio externo) */
   .cost-card-footer{
@@ -458,6 +505,9 @@
     border:1px solid rgba(244,201,93,.28);align-self:flex-start;font-weight:600;
   }
   .tool-card .tc-status.ready{background:rgba(95,216,168,.1);color:var(--ok);border-color:rgba(95,216,168,.28)}
+  .tool-card[data-source]{cursor:pointer;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+  .tool-card[data-source]:hover{transform:translateY(-3px);border-color:rgba(139,92,246,.5);box-shadow:0 8px 28px -12px rgba(139,92,246,.45)}
+  .tool-card[data-source]:focus-visible{outline:none;border-color:var(--brand-bright);box-shadow:0 0 0 2px rgba(139,92,246,.4)}
 
   .s6-footer{
     margin-top:5vh;text-align:center;font-size:.84rem;color:var(--text-2);max-width:60ch;margin-left:auto;margin-right:auto;line-height:1.6;
@@ -560,7 +610,6 @@
     /* Etiquetas inline para cada celda */
     .cost-table .ct-desc::before,
     .cost-table .ct-plazo::before,
-    .cost-table .ct-horas::before,
     .cost-table .ct-usd::before{
       content:attr(data-label);display:block;
       font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;
@@ -569,9 +618,13 @@
     }
     .cost-table .ct-desc::before{content:'Descripción'}
     .cost-table .ct-plazo::before{content:'Plazo'}
-    .cost-table .ct-horas::before{content:'Horas'}
     .cost-table .ct-usd::before{content:'Costo'}
-    .cost-table .ct-horas,.cost-table .ct-usd{text-align:left}
+    .cost-table .ct-usd{text-align:left}
+    /* Sub total en mobile: sin floating label, tomar todo el ancho */
+    .cost-table tr.ct-subtotal{display:flex;justify-content:space-between;background:rgba(82,41,132,.18);padding:8px 12px;margin:6px 0 10px;border-radius:6px;border-left:3px solid var(--brand-bright)}
+    .cost-table tr.ct-subtotal td{padding:0;background:transparent;border:0}
+    .cost-table tr.ct-subtotal .ct-subtotal-label{text-align:left}
+    .cost-table tr.ct-subtotal .ct-usd::before{content:''}
     .ct-item{
       background:transparent;border-right:none;border-left:none;padding:0 0 10px;
       margin-bottom:8px;border-bottom:1px solid var(--line-2);
@@ -758,7 +811,7 @@
 
         <!-- RIGHT: PLATAFORMA COMERCIAL -->
         <div class="s3-col right">
-          <div class="s3-col-tag">A futuro</div>
+          <div class="s3-col-tag">Lo siguiente</div>
           <div class="s3-col-title">Plataforma comercial</div>
           <div class="s3-list" data-typer-list="right">
             <div class="s3-item">
@@ -771,7 +824,7 @@
             </div>
             <div class="s3-item">
               <div class="s3-item-name">Limitación</div>
-              <div class="s3-item-desc"><span class="typer">Análisis de costos externos y definición de herramientas ad hoc por clientes puntuales.</span></div>
+              <div class="s3-item-desc"><span class="typer">Análisis de viabilidad y definición de herramientas ad hoc para prospectos puntuales.</span></div>
             </div>
           </div>
         </div>
@@ -792,66 +845,81 @@
 
     <div class="s4-inner">
       <div class="s4-header">
-        <div class="eyebrow">Caja negra</div>
+        <div class="eyebrow">La caja negra</div>
         <h2 class="slide-title">Flujo de datos</h2>
         <p class="slide-sub">Ahora sí, los datos claros.</p>
       </div>
 
-      <!-- 3 columnas: producción / testeo / infra -->
+      <!-- 3 recuadros: Infraestructura / Data / Análisis socio-económico -->
       <div class="s4-flow">
-        <div class="blackbox bb-prod">
-          <span class="bb-label">Producción</span>
-          <div class="src-row" data-source="osm">
-            <div><div class="src-name">OpenStreetMap</div><div class="src-sub">Catálogo abierto</div></div>
-            <div class="src-pill">tiempo real</div>
-          </div>
-          <div class="src-row" data-source="overture">
-            <div><div class="src-name">Overture Maps</div><div class="src-sub">Dataset global</div></div>
-            <div class="src-pill">trimestral</div>
-          </div>
-          <div class="src-row" data-source="gplaces">
-            <div><div class="src-name">Google Places API</div><div class="src-sub">Valida vigencia</div></div>
-            <div class="src-pill">mensual</div>
-          </div>
-        </div>
 
-        <div class="blackbox bb-test">
-          <span class="bb-label">Para testear</span>
-          <div class="src-row" data-source="dataforseo">
-            <div><div class="src-name">Web Intelligence</div><div class="src-sub">DataForSEO · SEO</div></div>
-            <div class="src-pill">semanal</div>
-          </div>
-          <div class="src-row" data-source="citas-ia">
-            <div><div class="src-name">Citas en IA</div><div class="src-sub">Claude · Perplexity</div></div>
-            <div class="src-pill">mensual</div>
-          </div>
-          <div class="src-row" data-source="trackeo">
-            <div><div class="src-name">Trackeo de tráfico</div><div class="src-sub">HERE · TomTom</div></div>
-            <div class="src-pill">tiempo real</div>
-          </div>
-        </div>
-
+        <!-- 1. INFRAESTRUCTURA (verde) -->
         <div class="blackbox bb-core">
           <span class="bb-label">Infraestructura</span>
-          <div class="src-row" data-source="donweb">
-            <div><div class="src-name">Don Web</div><div class="src-sub">Host del backend</div></div>
-            <div class="src-pill">always-on</div>
-          </div>
-          <div class="src-row" data-source="postgres">
-            <div><div class="src-name">PostgreSQL + PostGIS</div><div class="src-sub">Base única auditable</div></div>
-            <div class="src-pill">geoespacial</div>
-          </div>
-          <div class="src-row" data-source="n8n">
-            <div><div class="src-name">n8n</div><div class="src-sub">Orquestador de flujos</div></div>
-            <div class="src-pill">workflows</div>
+          <p class="bb-desc">Servidores en Argentina con bases de datos donde viven los locales con sus coordenadas, y los procesos automáticos que mantienen actualizada la información cada cierto tiempo.</p>
+          <div class="bb-rows">
+            <div class="src-row" data-source="donweb">
+              <div><div class="src-name">Don Web</div><div class="src-sub">Host del backend</div></div>
+              <div class="src-pill">always-on</div>
+            </div>
+            <div class="src-row" data-source="postgres">
+              <div><div class="src-name">PostgreSQL + PostGIS</div><div class="src-sub">Base única auditable</div></div>
+              <div class="src-pill">geoespacial</div>
+            </div>
+            <div class="src-row" data-source="n8n">
+              <div><div class="src-name">n8n</div><div class="src-sub">Orquestador de flujos</div></div>
+              <div class="src-pill">workflows</div>
+            </div>
           </div>
         </div>
+
+        <!-- 2. DATA (azul) -->
+        <div class="blackbox bb-data">
+          <span class="bb-label">Data</span>
+          <p class="bb-desc">OpenStreetMap aporta el grueso del universo, Overture complementa con micro-negocios y comercios poco mapeados, y Google valida cierres y confirma faltantes.</p>
+          <div class="bb-rows">
+            <div class="src-row" data-source="osm">
+              <div><div class="src-name">OpenStreetMap</div><div class="src-sub">Catálogo abierto</div></div>
+              <div class="src-pill">base</div>
+            </div>
+            <div class="src-row" data-source="overture">
+              <div><div class="src-name">Overture Maps</div><div class="src-sub">Consorcio global</div></div>
+              <div class="src-pill">cobertura</div>
+            </div>
+            <div class="src-row" data-source="gplaces">
+              <div><div class="src-name">Google Places API</div><div class="src-sub">Valida vigencia</div></div>
+              <div class="src-pill">complemento</div>
+            </div>
+            <div class="src-row" data-source="marcas-sucursales">
+              <div><div class="src-name">Marcas y sucursales</div><div class="src-sub">Padrón sectorial · Sitios oficiales · Mapping FQC</div></div>
+              <div class="src-pill">automatizado</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. ANÁLISIS SOCIO-ECONÓMICO (amarillo) -->
+        <div class="blackbox bb-analisis">
+          <span class="bb-label">Análisis socio-económico</span>
+          <p class="bb-desc">Herramientas para entender una zona antes de abrir un local. El sistema combina la base con datos de población y economía del INDEC y genera reportes y análisis comparativos entre puntos.</p>
+          <div class="bb-rows">
+            <div class="src-row" data-source="reporte">
+              <div><div class="src-name">Reporte de zona</div><div class="src-sub">Vista completa de un mercado</div></div>
+              <div class="src-pill">descargable</div>
+            </div>
+            <div class="src-row" data-source="analizar-punto">
+              <div><div class="src-name">Analizar punto</div><div class="src-sub">Radio sobre una coordenada</div></div>
+              <div class="src-pill">interactivo</div>
+            </div>
+            <div class="src-row src-row-soon" data-source="analisis-comparativo">
+              <div><div class="src-name">Análisis comparativo</div><div class="src-sub">Comparación entre zonas</div></div>
+              <div class="src-pill">próximamente</div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div class="s4-hint">Tocá cualquier elemento para ver el detalle</div>
-      <div class="s4-foot">
-        <strong>Footfall por celulares</strong> (Foursquare / Cuebiq) disponible como upgrade Enterprise para zonas TOP · <strong>Access Power</strong> para auditoría visual de queries SQL sobre la base.
-      </div>
     </div>
 
     <div class="corner-brand">
@@ -868,8 +936,8 @@
 
     <div class="s5-inner">
       <div class="s5-header">
-        <div class="eyebrow">Inversión Fase 1</div>
-        <h2 class="slide-title">Costo de trabajo desagregado</h2>
+        <div class="eyebrow">Fase 1</div>
+        <h2 class="slide-title">Propuesta de valor</h2>
       </div>
 
       <div class="cost-card">
@@ -879,7 +947,6 @@
             <col class="c-item"/>
             <col class="c-desc"/>
             <col class="c-plazo"/>
-            <col class="c-horas"/>
             <col class="c-usd"/>
           </colgroup>
           <thead>
@@ -887,8 +954,7 @@
               <th>Item</th>
               <th>Descripción</th>
               <th>Plazo</th>
-              <th class="right">Horas*</th>
-              <th class="right">Costo**</th>
+              <th class="right">Costo*</th>
             </tr>
           </thead>
           <tbody>
@@ -897,8 +963,11 @@
               <td class="ct-item"><strong>Plataforma</strong></td>
               <td class="ct-desc">Diseño y personalización de la herramienta.</td>
               <td class="ct-plazo">Mes 0</td>
-              <td class="ct-horas">60 hs</td>
-              <td class="ct-usd">USD 6.000</td>
+              <td class="ct-usd"></td>
+            </tr>
+            <tr class="ct-subtotal">
+              <td colspan="3" class="ct-subtotal-label">Sub total</td>
+              <td class="ct-usd">USD 7.000</td>
             </tr>
 
             <!-- Implementación (4 sub-tareas) -->
@@ -909,26 +978,26 @@
               </td>
               <td class="ct-desc">Migración a servidor de FQC, alta de usuarios, permisos, seguridad.</td>
               <td class="ct-plazo">Semana 1</td>
-              <td class="ct-horas">20 hs</td>
-              <td class="ct-usd">USD 400</td>
-            </tr>
-            <tr>
-              <td class="ct-desc">Investigación y prueba de otras herramientas: SEO, trackeo, web intelligence.</td>
-              <td class="ct-plazo">Semana 2</td>
-              <td class="ct-horas">20 hs</td>
-              <td class="ct-usd">USD 400</td>
+              <td class="ct-usd"></td>
             </tr>
             <tr>
               <td class="ct-desc">Ajustes de bases de datos auditables y categorías corregidas.</td>
+              <td class="ct-plazo">Semana 2</td>
+              <td class="ct-usd"></td>
+            </tr>
+            <tr>
+              <td class="ct-desc">Investigación y prueba de otras herramientas: SEO, trackeo, web intelligence.</td>
               <td class="ct-plazo">Semana 3</td>
-              <td class="ct-horas">20 hs</td>
-              <td class="ct-usd">USD 400</td>
+              <td class="ct-usd"></td>
             </tr>
             <tr>
               <td class="ct-desc">Herramientas de análisis: demográficos, económicos, gráficos.</td>
               <td class="ct-plazo">Semana 4</td>
-              <td class="ct-horas">20 hs</td>
-              <td class="ct-usd">USD 400</td>
+              <td class="ct-usd"></td>
+            </tr>
+            <tr class="ct-subtotal">
+              <td colspan="3" class="ct-subtotal-label">Sub total</td>
+              <td class="ct-usd">USD 2.500</td>
             </tr>
 
             <!-- Automatizaciones, Evaluación y Simulación de caso (4 sub-tareas) -->
@@ -939,48 +1008,46 @@
               </td>
               <td class="ct-desc">Automatización de actualizaciones. Testeo.</td>
               <td class="ct-plazo">Semana 5-6</td>
-              <td class="ct-horas">40 hs</td>
-              <td class="ct-usd">USD 800</td>
+              <td class="ct-usd"></td>
             </tr>
             <tr>
               <td class="ct-desc">Testeo de la plataforma; incorporación de herramientas aprobadas.</td>
               <td class="ct-plazo">Semana 7</td>
-              <td class="ct-horas">10 hs</td>
-              <td class="ct-usd">USD 150</td>
+              <td class="ct-usd"></td>
             </tr>
             <tr>
               <td class="ct-desc">Evaluación de costos para extensión. Ajustes finales y reporte.</td>
               <td class="ct-plazo">Semana 7</td>
-              <td class="ct-horas">10 hs</td>
-              <td class="ct-usd">USD 150</td>
+              <td class="ct-usd"></td>
             </tr>
             <tr>
               <td class="ct-desc">Simulación de escenario junto a coordinador y/o vendedor.</td>
               <td class="ct-plazo">A coordinar</td>
-              <td class="ct-horas">—</td>
-              <td class="ct-usd">—</td>
+              <td class="ct-usd"></td>
+            </tr>
+            <tr class="ct-subtotal">
+              <td colspan="3" class="ct-subtotal-label">Sub total</td>
+              <td class="ct-usd">USD 2.500</td>
             </tr>
 
             <!-- Total -->
             <tr class="ct-total">
               <td class="ct-item"><strong>Total</strong></td>
-              <td class="ct-desc">Fase 1 · de la idea al cliente real</td>
+              <td class="ct-desc"></td>
               <td class="ct-plazo">3 meses</td>
-              <td class="ct-horas">~ 200 hs</td>
-              <td class="ct-usd">USD 9.100</td>
+              <td class="ct-usd">USD 12.000</td>
             </tr>
           </tbody>
         </table>
         <div class="cost-card-footer">
-          <span>* Se calculan 4 horas de trabajo por día.</span>
-          <span>** El costo no incluye herramientas pagas.</span>
+          <span>* El costo no incluye herramientas externas ni impuestos.</span>
         </div>
       </div>
     </div>
 
     <div class="corner-brand">
       <svg viewBox="0 0 25 36" xmlns="http://www.w3.org/2000/svg"><path d="M0.715 10.934L18.797 0.276L24.824 3.828L6.743 14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M6.742 21.589L18.796 14.485L24.824 18.037L12.769 25.143L6.742 21.589Z" fill="#8b5cf6"/><path d="M0.715 10.934V25.143L6.743 28.695V14.486L0.715 10.934Z" fill="#8b5cf6"/><path d="M12.769 25.143V32.247L6.742 28.695V21.59L12.769 25.143Z" fill="#8b5cf6"/><path d="M12.769 32.247L18.796 28.695L24.824 32.247L18.796 35.799L12.769 32.247Z" fill="#8b5cf6"/></svg>
-      <span class="corner-text">FQC · Costo trabajo</span>
+      <span class="corner-text">FQC · Propuesta de valor</span>
     </div>
   </section>
 
@@ -998,32 +1065,32 @@
       </div>
 
       <div class="s6-grid">
-        <div class="tool-card">
+        <div class="tool-card" data-source="donweb-pricing" role="button" tabindex="0">
           <span class="tc-num">01 / Infraestructura</span>
           <div class="tc-title">Servidor Don Web</div>
-          <p class="tc-role">VPS donde vive todo el backend: Postgres + PostGIS, n8n, API. Reemplaza los JSON estáticos por una base viva auto-actualizada.</p>
-          <span class="tc-status ready">A cotizar con FQC</span>
+          <p class="tc-role">Servidor en Argentina donde vive todo el sistema. Reemplaza los archivos estáticos por una base de información viva que se actualiza sola.</p>
+          <span class="tc-status ready">Sin costo para Startup</span>
         </div>
 
-        <div class="tool-card">
+        <div class="tool-card" data-source="gplaces-pricing" role="button" tabindex="0">
           <span class="tc-num">02 / Vigencia</span>
           <div class="tc-title">Google Place API</div>
-          <p class="tc-role">Validación de business_status de cada POI. Cierra el flanco de “¿este local sigue abierto?” con la fuente más autoritativa del mercado.</p>
-          <span class="tc-status">Pendiente de testeo</span>
+          <p class="tc-role">Confirma si cada local sigue abierto consultando la fuente más usada del mercado. Es la señal más confiable de vigencia comercial.</p>
+          <span class="tc-status ready">Sin costo para Startup</span>
         </div>
 
         <div class="tool-card">
-          <span class="tc-num">03 / Web Intelligence</span>
+          <span class="tc-num">03 / Visibilidad digital</span>
           <div class="tc-title">SEO</div>
-          <p class="tc-role">DataForSEO (SERP, backlinks) + monitoreo de citas en IA (Claude, Perplexity) para medir visibilidad digital por marca de la GAF.</p>
-          <span class="tc-status">Pendiente de testeo</span>
+          <p class="tc-role">Cuánto pesa cada marca en internet: posicionamiento orgánico, autoridad temática y menciones en buscadores con inteligencia artificial.</p>
+          <span class="tc-status">Investigación semana 3</span>
         </div>
 
         <div class="tool-card">
           <span class="tc-num">04 / Tráfico</span>
           <div class="tc-title">Tracking</div>
-          <p class="tc-role">Capa de tráfico vial (HERE / TomTom) y footfall opcional por celulares (Foursquare / Cuebiq) para clientes Enterprise.</p>
-          <span class="tc-status">Pendiente de testeo</span>
+          <p class="tc-role">Flujo de vehículos frente al local en tiempo real y, opcionalmente, conteo aproximado de personas por movilidad de celulares en zonas premium.</p>
+          <span class="tc-status">Investigación semana 3</span>
         </div>
       </div>
 
@@ -1229,7 +1296,7 @@
 
   const SOURCES = {
     'osm':{
-      color:'prod', eyebrow:'Producción · Catálogo abierto', title:'OpenStreetMap',
+      color:'data', eyebrow:'Data · Catálogo abierto', title:'OpenStreetMap',
       sub:'El catálogo de locales que mantiene la comunidad.',
       video:'assets/osm.mp4',
       image:'assets/02_overpass_mendoza_mcdonalds_12tags.png',
@@ -1242,7 +1309,7 @@
       meta:[['Tipo','Puntos de interés + tags'],['Cobertura','Nacional'],['Actualizaciones','Tiempo real'],['Acceso','Gratis']]
     },
     'overture':{
-      color:'prod', eyebrow:'Producción · Dataset global', title:'Overture Maps',
+      color:'data', eyebrow:'Data · Dataset global', title:'Overture Maps',
       sub:'Consorcio de Meta, Microsoft, Amazon y TomTom.',
       video:'assets/overture.mp4',
       playbackRate:1.25,
@@ -1256,16 +1323,21 @@
       meta:[['Tipo','Puntos de interés consolidados'],['Cobertura','Global'],['Actualizaciones','Mensual'],['Acceso','Gratis']]
     },
     'gplaces':{
-      color:'prod', eyebrow:'Producción · Vigencia', title:'Google Places API',
-      sub:'La señal más confiable de si un local sigue abierto.',
+      color:'data', eyebrow:'Data · Vigencia', title:'Google Places API',
+      sub:'Metodología híbrida: solo consultamos Google sobre lo que las otras fuentes no logran resolver, evitando saturar la API y manteniendo el costo en cero.',
       image:'assets/01_google_places.png',
-      annotations:[{x:50, y:48, dy:26, text:'business_status'}],
+      annotations:[{x:50, y:48, dy:26, text:'validación selectiva'}],
       narration:[
-        'Le pregunta a Google si el local sigue abierto.',
-        'Es nuestra señal más confiable de vigencia.',
-        'Una vez por mes, sobre un subconjunto rotativo.'
+        'Primero se cruzan las fuentes abiertas y los sitios oficiales de cada marca.',
+        'Cuando un local queda en duda o aparece como cierre reciente, recién ahí preguntamos a Google.',
+        'Esto reduce drásticamente las consultas y mantiene la cobertura dentro del cupo gratuito.'
       ],
-      meta:[['Tipo','Status + horarios'],['Frecuencia','Mensual rotatorio'],['Free tier','5k–10k/mes'],['Costo','US$0–56/mes']]
+      meta:[
+        ['Rol','Validación selectiva de vigencia'],
+        ['Disparador','Discrepancia entre fuentes'],
+        ['Frecuencia','Trimestral + on-demand'],
+        ['Costo Startup','US$0']
+      ]
     },
     'dataforseo':{
       color:'test', eyebrow:'Para testear · Inteligencia digital', title:'DataForSEO',
@@ -1335,6 +1407,104 @@
         'Permite automatizar procesos.',
         'Se monta al sistema o CRM para usarse desde la interfaz.'
       ]
+    },
+    'marcas-sucursales':{
+      color:'data', eyebrow:'Data · Sector franquicias', title:'Marcas y sucursales',
+      sub:'La capa específica del sector: padrón sectorial, sitios oficiales de cada marca y el Mapping que FQC aporta al sistema.',
+      narration:[
+        'El padrón sectorial es la lista pública de marcas que operan bajo modelo de franquicia.',
+        'Los sitios oficiales de cada marca aportan la lista actualizada de sucursales — la fuente de verdad de la propia marca.',
+        'El Mapping de FQC suma información curada por el cliente: marcas trabajadas, contactos, oportunidades.',
+        'Las tres capas se cruzan automáticamente y se mantienen vigentes mes a mes.'
+      ],
+      meta:[
+        ['Padrón sectorial','Lista pública de marcas'],
+        ['Sitios oficiales','~178 marcas auditadas'],
+        ['Mapping FQC','Aporte curado del cliente'],
+        ['Actualización','Mensual']
+      ]
+    },
+    'reporte':{
+      color:'analisis', eyebrow:'Análisis · Reporte de zona', title:'Reporte de zona',
+      sub:'Una vista completa del mercado de una ciudad o área concreta, lista para descargar.',
+      video:'assets/reporte.mp4',
+      narration:[
+        'Genera un informe completo para una ciudad o zona elegida.',
+        'Cruza la base de locales con datos de población, economía y consumo del INDEC.',
+        'Se descarga listo para compartir con un cliente o presentar internamente.'
+      ],
+      meta:[
+        ['Tipo','Documento ejecutivo'],
+        ['Datos cruzados','Demografía + Tejido comercial + % Prospectos potenciales'],
+        ['Fuentes oficiales','INDEC + a definir'],
+        ['Salida','Descargable o Web']
+      ]
+    },
+    'analizar-punto':{
+      color:'analisis', eyebrow:'Análisis · Radio sobre coordenada', title:'Analizar punto',
+      sub:'Marcá un punto en el mapa y obtené el análisis completo del entorno en el radio que elijas.',
+      video:'assets/analizar_punto.mp4',
+      narration:[
+        'Elegís un punto del mapa con un click y un radio en metros.',
+        'El sistema muestra población alcanzada, locales del rubro elegido y competencia más cercana.',
+        'Ideal para evaluar una dirección candidata antes de firmar contrato.'
+      ],
+      meta:[
+        ['Entrada','Coordenada + radio'],
+        ['Salida','Población · Locales · Competencia'],
+        ['Interacción','En vivo sobre el mapa']
+      ]
+    },
+    'analisis-comparativo':{
+      color:'analisis', eyebrow:'Análisis · Próximamente', title:'Análisis comparativo',
+      sub:'Comparación lado a lado entre dos o más zonas candidatas para decidir cuál tiene mejor potencial.',
+      narration:[
+        'Permite seleccionar varias zonas y ver sus indicadores enfrentados.',
+        'Población, poder adquisitivo, densidad de comercios afines y oferta competitiva.',
+        'En desarrollo — disponible próximamente en el roadmap del producto.'
+      ],
+      meta:[
+        ['Estado','En desarrollo'],
+        ['Entrada','Zonas seleccionadas'],
+        ['Salida','Tabla comparativa de indicadores']
+      ]
+    },
+    'donweb-pricing':{
+      color:'core', eyebrow:'Infraestructura · Servidor', title:'Servidor Don Web',
+      sub:'Servidor en Argentina, baja latencia y alta confianza de uptime.',
+      image:'assets/donweb_pricing.png',
+      imageLink:'https://donweb.com/es-ar/?ad_campaign=209398715&ad_content=760166907027&pcprovider=google&gad_source=1&gad_campaignid=209398715&gbraid=0AAAAAD6Zr7nKJTOMR8o7CHJPL6RCqmByA&gclid=Cj0KCQjw54nRBhDCARIsAMcY_SAmylDhvZ78A_NiLHhGMki0yP_8UtpdGaMGVUwEICdUQTcZDR4N_0MaAhW2EALw_wcB',
+      imageLinkLabel:'Ver planes en donweb.com',
+      narration:[
+        'Plan recomendado para el startup: 2 vCPU · 8 GB RAM · 20 GB SSD · 1 TB.',
+        'Holgado para sostener la base, los procesos automáticos y la interfaz desde el día uno.',
+        'Proveedor con servidores en Argentina y soporte local — el costo va aparte en esta tabla.'
+      ],
+      meta:[
+        ['Startup','2 vCPU · 8 GB · 20 GB'],
+        ['Costo mensual','~$11.000 ARS (≈ US$10)'],
+        ['Backups','Diarios offsite'],
+        ['Escalable a','Plataforma consolidada · ~$24.000/mes (anual)']
+      ]
+    },
+    'gplaces-pricing':{
+      color:'prod', eyebrow:'Producción · Vigencia', title:'Google Places API',
+      sub:'Oráculo de vigencia con free tier que cubre el piloto entero sin costo.',
+      image:'assets/google_places_pricing.png',
+      imageLink:'https://mapsplatform.google.com/pricing/',
+      imageLinkLabel:'Ver pricing oficial Google Maps Platform',
+      narration:[
+        'Lo usamos como oráculo: confirma si un local sigue abierto.',
+        'Free tier: 10.000 consultas/mes de Place Details Essentials = US$0.',
+        'Piloto Mendoza + Bahía proyecta ~1.100 consultas/mes → 11% del cupo gratis.',
+        'Escala a Argentina entera (15 ciudades) en ~1.500 consultas/mes → 15% del cupo.'
+      ],
+      meta:[
+        ['Tipo de uso','Validación de vigencia + descubrimiento dirigido'],
+        ['Free tier','10.000 consultas/mes'],
+        ['Uso proyectado piloto','~1.100/mes (US$0)'],
+        ['Uso proyectado AR x15','~1.500/mes (US$0)']
+      ]
     }
   };
 
@@ -1389,7 +1559,18 @@
       const img = document.createElement('img');
       img.src = data.image;
       img.alt = data.title;
-      mFigure.insertBefore(img, mNarr);
+      if(data.imageLink){
+        const link = document.createElement('a');
+        link.href = data.imageLink;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.className = 'modal-image-link';
+        link.title = data.imageLinkLabel || 'Abrir fuente oficial';
+        link.appendChild(img);
+        mFigure.insertBefore(link, mNarr);
+      } else {
+        mFigure.insertBefore(img, mNarr);
+      }
       (data.annotations || []).forEach((a,i)=>{
         const ann = document.createElement('div');
         ann.className = 'modal-annot';
@@ -1427,8 +1608,8 @@
   function openModal(key){
     const data = SOURCES[key];
     if(!data) return;
-    modalEl.classList.remove('prod','test','core');
-    modalEl.classList.add(data.color || 'prod');
+    modalEl.classList.remove('prod','data','test','analisis','core');
+    modalEl.classList.add(data.color || 'data');
     mEyebrow.textContent = data.eyebrow || '';
     mTitle.textContent = data.title || '';
     mSub.textContent = data.sub || '';
