@@ -1739,32 +1739,15 @@
     if(data.video){
       mFigure.classList.add('dark');
       const v = document.createElement('video');
-      // Atributos como HTML attributes (más amplia compatibilidad que las propiedades IDL)
-      v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true;
-      v.setAttribute('muted','');
-      v.setAttribute('autoplay','');
-      v.setAttribute('loop','');
-      v.setAttribute('playsinline','');
-      v.preload = 'auto';
-      // <source> con type explícito ayuda a algunos navegadores a no abandonar la
-      // carga si el server no devuelve content-type ideal o no soporta range
-      const src = document.createElement('source');
-      src.src = data.video;
-      src.type = 'video/mp4';
-      v.appendChild(src);
-      // Fallback "src" directo además del <source> (algunos motores prefieren uno u otro)
       v.src = data.video;
+      v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true;
+      v.preload = 'metadata';
       if(data.playbackRate){
         v.defaultPlaybackRate = data.playbackRate;
         v.addEventListener('loadedmetadata', ()=>{
           try{ v.playbackRate = data.playbackRate; }catch(e){}
         });
       }
-      // Si autoplay falla (políticas del navegador), forzar play manual
-      v.addEventListener('canplay', ()=>{
-        const p = v.play();
-        if(p && p.catch) p.catch(()=>{});
-      });
       v.onerror = ()=>{
         mFigure.classList.remove('dark');
         v.remove();
