@@ -427,6 +427,8 @@
 
   /* Modal en modo categoría: lista de herramientas clickeables */
   .modal-rows{display:flex;flex-direction:column;gap:10px;margin-top:8px;opacity:0;animation:fadeUp .32s ease .12s forwards}
+  .modal-rows[hidden]{display:none !important}
+  .modal-rows-title{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-2);font-weight:600;margin:6px 2px -2px;padding-top:18px;border-top:1px solid var(--line)}
   .modal-row-item{
     display:flex;align-items:center;justify-content:space-between;gap:14px;
     padding:16px 18px;border-radius:10px;cursor:pointer;
@@ -1430,8 +1432,9 @@
     'gplaces':{
       color:'data', eyebrow:'Data · Vigencia', title:'Google Places API',
       sub:'Metodología híbrida: solo consultamos Google sobre lo que las otras fuentes no logran resolver, evitando saturar la API y manteniendo el costo en cero.',
-      image:'assets/01_google_places.png',
-      annotations:[{x:50, y:48, dy:26, text:'validación selectiva'}],
+      image:'assets/google_places_pricing.png',
+      imageLink:'https://mapsplatform.google.com/pricing/',
+      imageLinkLabel:'Ver pricing oficial Google Maps Platform',
       narration:[
         'Primero se cruzan las fuentes abiertas y los sitios oficiales de cada marca.',
         'Cuando un local queda en duda o aparece como cierre reciente, recién ahí preguntamos a Google.',
@@ -1494,6 +1497,7 @@
     'postgres':{
       color:'core', eyebrow:'Infraestructura · Base de datos', title:'PostgreSQL + PostGIS',
       sub:'Una sola base que junta todo.',
+      hideInList:true,
       svg:SVG_POSTGRES,
       narration:[
         'Una sola base que junta todo.',
@@ -1755,11 +1759,45 @@
     }
   }
 
+  // Localizar la categoría a la que pertenece un source (para sub-navegación)
+  function findCategoryOfSource(sourceKey){
+    for(const [catKey, cat] of Object.entries(CATEGORIES)){
+      for(const row of (cat.rows || [])){
+        if(row.pair){
+          for(const half of row.pair){
+            if(half.source === sourceKey) return cat;
+          }
+        } else if(row.source === sourceKey){
+          return cat;
+        }
+      }
+    }
+    return null;
+  }
+
+  // Lista plana de "otras opciones" de una categoría, excluyendo la actual y las hideInList
+  function otherOptionsForSource(sourceKey, cat){
+    const out = [];
+    (cat.rows || []).forEach(row=>{
+      if(row.pair){
+        row.pair.forEach(half=>{
+          if(half.source !== sourceKey && !SOURCES[half.source]?.hideInList){
+            out.push(half);
+          }
+        });
+      } else if(row.source !== sourceKey && !row.soon && !SOURCES[row.source]?.hideInList){
+        out.push(row);
+      }
+    });
+    return out;
+  }
+
   function openModal(key){
     const data = SOURCES[key];
     if(!data) return;
     // Salir de modo categoría si veníamos de ahí
     mRows.hidden = true;
+    mRows.innerHTML = '';
     mFigure.style.display = '';
     modalEl.classList.remove('prod','data','test','analisis','core');
     modalEl.classList.add(data.color || 'data');
@@ -1792,6 +1830,28 @@
       row.append(lab, val);
       mMeta.appendChild(row);
     });
+
+    // Sub-navegación: otras opciones de la misma categoría (sin la actual y sin las hideInList)
+    const cat = findCategoryOfSource(key);
+    if(cat){
+      const others = otherOptionsForSource(key, cat);
+      if(others.length){
+        mRows.hidden = false;
+        const heading = document.createElement('div');
+        heading.className = 'modal-rows-title';
+        heading.textContent = 'Otras herramientas de esta categoría';
+        mRows.appendChild(heading);
+        others.forEach(r=>{
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'modal-row-item';
+          btn.dataset.source = r.source;
+          btn.innerHTML = `<div><div class="mri-name">${r.name}</div><div class="mri-sub">${r.sub}</div></div><span class="mri-arrow">Ver detalle →</span>`;
+          btn.addEventListener('click', ()=> openModal(r.source));
+          mRows.appendChild(btn);
+        });
+      }
+    }
 
     backdrop.classList.add('open');
     backdrop.setAttribute('aria-hidden','false');
@@ -1827,10 +1887,23 @@
     mRows.innerHTML = '';
     cat.rows.forEach(r=>{
       if(r.pair){
-        // Fila combinada (OSM + Overture): dos botones lado a lado
+        // Fila combinada (OSM + Overture): dos botones lado a lado — filtrar las hideInList
+        const halves = r.pair.filter(h => !SOURCES[h.source]?.hideInList);
+        if(!halves.length) return;
+        if(halves.length === 1){
+          const only = halves[0];
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'modal-row-item';
+          btn.dataset.source = only.source;
+          btn.innerHTML = `<div><div class="mri-name">${only.name}</div><div class="mri-sub">${only.sub}</div></div><span class="mri-arrow">Ver detalle →</span>`;
+          btn.addEventListener('click', ()=> openModal(only.source));
+          mRows.appendChild(btn);
+          return;
+        }
         const wrap = document.createElement('div');
         wrap.className = 'modal-row-item modal-row-pair';
-        r.pair.forEach((half,i)=>{
+        halves.forEach((half,i)=>{
           if(i > 0){
             const plus = document.createElement('span');
             plus.className = 'modal-row-plus';
@@ -1847,6 +1920,8 @@
         });
         mRows.appendChild(wrap);
       } else {
+        // Ocultar opciones marcadas como hideInList (sin contenido sustantivo)
+        if(SOURCES[r.source]?.hideInList) return;
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'modal-row-item' + (r.soon ? ' is-soon' : '');
