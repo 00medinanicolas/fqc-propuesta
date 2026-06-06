@@ -1413,7 +1413,7 @@
         'Es el Wikipedia de los mapas: lo arma y mantiene la comunidad.',
         'Gratuito, masivo, siempre disponible.'
       ],
-      meta:[['Tipo','Puntos de interés + tags'],['Cobertura','Nacional'],['Actualizaciones','Tiempo real'],['Acceso','Gratis']]
+      meta:[['Tipo','Puntos de interés + tags'],['Cobertura','Nacional'],['Actualizaciones','Tiempo real'],['Acceso','Abierto']]
     },
     'overture':{
       color:'data', eyebrow:'Data · Dataset global', title:'Overture Maps',
@@ -1427,7 +1427,7 @@
         'Releases mensuales de un consorcio global.',
         'Detecta micro-negocios y servicios particulares.'
       ],
-      meta:[['Tipo','Puntos de interés consolidados'],['Cobertura','Global'],['Actualizaciones','Mensual'],['Acceso','Gratis']]
+      meta:[['Tipo','Puntos de interés consolidados'],['Cobertura','Global'],['Actualizaciones','Mensual'],['Acceso','Abierto']]
     },
     'gplaces':{
       color:'data', eyebrow:'Data · Vigencia', title:'Google Places API',
@@ -1486,7 +1486,7 @@
     'donweb':{
       color:'core', eyebrow:'Infraestructura · Servidor', title:'Don Web',
       sub:'El servidor donde vive todo el backend.',
-      svg:SVG_DONWEB,
+      image:'assets/donweb.png',
       narration:[
         'Es el servidor donde vive todo el backend.',
         'VPS argentina — soberanía de datos y baja latencia.',
@@ -1599,21 +1599,21 @@
     },
     'gplaces-pricing':{
       color:'prod', eyebrow:'Producción · Vigencia', title:'Google Places API',
-      sub:'Oráculo de vigencia con free tier que cubre el piloto entero sin costo.',
+      sub:'Oráculo de vigencia: tier gratuito amplio y costo marginal bajo cuando se supera.',
       image:'assets/google_places_pricing.png',
       imageLink:'https://mapsplatform.google.com/pricing/',
       imageLinkLabel:'Ver pricing oficial Google Maps Platform',
       narration:[
         'Lo usamos como oráculo: confirma si un local sigue abierto.',
-        'Free tier: 10.000 consultas/mes de Place Details Essentials = US$0.',
-        'Piloto Mendoza + Bahía proyecta ~1.100 consultas/mes → 11% del cupo gratis.',
-        'Escala a Argentina entera (15 ciudades) en ~1.500 consultas/mes → 15% del cupo.'
+        'Las primeras 10.000 consultas del mes son gratis (Place Details Essentials).',
+        'Pasado ese tope, cada 1.000 consultas adicionales cuesta US$5 — US$0,005 por consulta.',
+        'Con uso prudente la operación entera del producto se mantiene dentro del cupo gratuito.'
       ],
       meta:[
         ['Tipo de uso','Validación de vigencia + descubrimiento dirigido'],
-        ['Free tier','10.000 consultas/mes'],
-        ['Uso proyectado piloto','~1.100/mes (US$0)'],
-        ['Uso proyectado AR x15','~1.500/mes (US$0)']
+        ['Free tier mensual','10.000 consultas/mes (Place Details Essentials)'],
+        ['Costo marginal','US$5 por cada 1.000 consultas adicionales'],
+        ['Costo por consulta','US$0,005 (a partir de la 10.001 del mes)']
       ]
     }
   };
@@ -1739,15 +1739,32 @@
     if(data.video){
       mFigure.classList.add('dark');
       const v = document.createElement('video');
-      v.src = data.video;
+      // Atributos como HTML attributes (más amplia compatibilidad que las propiedades IDL)
       v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true;
-      v.preload = 'metadata';
+      v.setAttribute('muted','');
+      v.setAttribute('autoplay','');
+      v.setAttribute('loop','');
+      v.setAttribute('playsinline','');
+      v.preload = 'auto';
+      // <source> con type explícito ayuda a algunos navegadores a no abandonar la
+      // carga si el server no devuelve content-type ideal o no soporta range
+      const src = document.createElement('source');
+      src.src = data.video;
+      src.type = 'video/mp4';
+      v.appendChild(src);
+      // Fallback "src" directo además del <source> (algunos motores prefieren uno u otro)
+      v.src = data.video;
       if(data.playbackRate){
         v.defaultPlaybackRate = data.playbackRate;
         v.addEventListener('loadedmetadata', ()=>{
           try{ v.playbackRate = data.playbackRate; }catch(e){}
         });
       }
+      // Si autoplay falla (políticas del navegador), forzar play manual
+      v.addEventListener('canplay', ()=>{
+        const p = v.play();
+        if(p && p.catch) p.catch(()=>{});
+      });
       v.onerror = ()=>{
         mFigure.classList.remove('dark');
         v.remove();
