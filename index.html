@@ -492,7 +492,7 @@
   .cost-table col.c-plazo{width:13%}
   .cost-table col.c-usd{width:20%}
   .cost-table thead th{
-    font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--text-2);
+    font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--text-2);white-space:nowrap;
     font-weight:600;text-align:left;padding:10px 22px;background:rgba(10,10,18,.55);
     border-bottom:1px solid var(--line-2);
   }
@@ -513,8 +513,8 @@
     margin-top:4px;line-height:1.38;font-style:italic;
   }
   .ct-desc{color:var(--text-1);font-weight:300;line-height:1.45}
-  .ct-plazo{color:var(--text-2);font-family:'JetBrains Mono',monospace;font-size:.76rem;letter-spacing:.02em}
-  .ct-usd{color:#fff;font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:600;text-align:right;letter-spacing:.02em}
+  .ct-plazo{color:var(--text-2);font-family:'JetBrains Mono',monospace;font-size:.76rem;letter-spacing:.02em;white-space:nowrap}
+  .ct-usd{color:#fff;font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:600;text-align:right;letter-spacing:.02em;white-space:nowrap}
   /* Sub total entre items */
   .cost-table tr.ct-subtotal td{
     background:rgba(82,41,132,.18);
@@ -523,7 +523,7 @@
     padding:7px 22px;vertical-align:middle;
   }
   .cost-table tr.ct-subtotal .ct-subtotal-label{
-    text-align:right;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;
+    text-align:right;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;white-space:nowrap;
     color:var(--brand-bright);font-weight:600;
   }
   .cost-table tr.ct-subtotal .ct-usd{color:var(--brand-bright);font-size:.94rem}
@@ -538,7 +538,7 @@
     font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:#fff;
     padding-top:12px;
   }
-  .cost-table tr.ct-total .ct-item strong{letter-spacing:.24em;font-size:.72rem}
+  .cost-table tr.ct-total .ct-item strong{letter-spacing:.24em;font-size:.72rem;white-space:nowrap}
   .cost-table tr.ct-total .ct-usd{color:var(--brand-bright);font-size:1.04rem}
   /* Asteriscos como footer dentro de la card (no compiten por espacio externo) */
   .cost-card-footer{
@@ -568,7 +568,8 @@
   .tool-card .tc-status{
     margin-top:auto;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;
     padding:6px 10px;border-radius:3px;background:rgba(244,201,93,.1);color:var(--accent);
-    border:1px solid rgba(244,201,93,.28);align-self:flex-start;font-weight:600;
+    border:1px solid rgba(244,201,93,.28);align-self:stretch;font-weight:600;
+    white-space:nowrap;text-align:center;
   }
   .tool-card .tc-status.ready{background:rgba(95,216,168,.1);color:var(--ok);border-color:rgba(95,216,168,.28)}
   .tool-card[data-source]{cursor:pointer;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
